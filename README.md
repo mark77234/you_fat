@@ -1,4 +1,4 @@
-# 살쪄
+# 살쪄 (1차)
 
 ### 최초 실행시
 
@@ -24,3 +24,7 @@
 - **설정**
     - 사용자정보 수정
     - 알림 끄기/켜기
+
+<img src="https://github.com/user-attachments/assets/1d5fc1b5-8026-4bf5-bccc-34a5f90ccb00" width=25%>
+
+
