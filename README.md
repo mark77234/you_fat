@@ -25,6 +25,8 @@
     - 사용자정보 수정
     - 알림 끄기/켜기
 
-<img src="https://github.com/user-attachments/assets/1d5fc1b5-8026-4bf5-bccc-34a5f90ccb00" width=25%>
+<img src="https://github.com/user-attachments/assets/6f24b1d7-8382-4bb0-a4c1-5e79f08dcfff" width=50%>
+
+
 
 
