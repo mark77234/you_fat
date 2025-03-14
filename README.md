@@ -130,7 +130,7 @@
 
 ### **시스템 구조**
 
-<img src="https://github.com/user-attachments/assets/6f24b1d7-8382-4bb0-a4c1-5e79f08dcfff" width=50%>
+<img src="https://github.com/user-attachments/assets/60a4336c-dafc-4d15-9ee6-853f7b6cd599" width=70%>
 
 
 
