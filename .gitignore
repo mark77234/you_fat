@@ -43,6 +43,9 @@ playground.xcworkspace
 # Packages/
 # Package.pins
 # Package.resolved
+*.xcuserstate
+*.xcworkspace
+*.xcodeproj/project.xcworkspace/
 # *.xcodeproj
 # Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
 # hence it is not needed unless you have added a package configuration file to your project
