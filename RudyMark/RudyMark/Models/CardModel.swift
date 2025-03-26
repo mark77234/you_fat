@@ -7,13 +7,25 @@
 
 import SwiftUI
 
+struct MiniCard{
+    let title: String
+    var value: String? // 일단 String 추후 Float으로 교체
+    var progress: Float?
+    var max: Float?
+    var barColor: Color?
+}
+
 struct CardData {
     let title: String
-    let description: String?
+    var description: String?
     let backgroundColor: Color
     let mainTextColor: Color
     let subTextColor: Color
     let height: CGFloat
     var progress: Float?
     var max: Float?
+    var cardCount: Int?
+    var miniCards: [MiniCard]?
+    var miniCardsColor: Color?
+    var miniCardsSize: CGFloat?
 }
