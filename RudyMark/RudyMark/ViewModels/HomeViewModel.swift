@@ -28,15 +28,28 @@ class HomeViewModel : ObservableObject {
                 subTextColor: Color.black,
                 height: 150,
                 progress: 1600, // 현재 식사한 칼로리
-                max: 2000
+                max: 2000,
+                cardCount: 3,
+                miniCards: [
+                    MiniCard(title: "탄수화물", progress: 250, max: 300,barColor: Color.blue),
+                    MiniCard(title: "단백질", progress: 80, max: 100,barColor: Color.red),
+                    MiniCard(title: "지방", progress: 50, max: 70,barColor: Color.green)
+                            ],
+                miniCardsColor: .skyblue,
+                miniCardsSize: 100
             ),
             CardData(
                 title:"오늘의 평균혈당",
-                description: "126 mg/dL",
                 backgroundColor: Color.white,
                 mainTextColor: Color.black,
                 subTextColor: Color.black,
-                height: 110
+                height: 110,
+                miniCards:[
+                    MiniCard(title:"평균혈당",value:"126 mg/dL"),
+                    MiniCard(title:"측정횟수",value:"3회")
+                ],
+                miniCardsColor: .lightRed,
+                miniCardsSize: 80
             ),
             CardData(
                 title:"오늘의 조언",
