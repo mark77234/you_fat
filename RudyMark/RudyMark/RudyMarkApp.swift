@@ -11,7 +11,7 @@ import SwiftUI
 struct RudyMarkApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            FirstInputView()
         }
     }
 }
