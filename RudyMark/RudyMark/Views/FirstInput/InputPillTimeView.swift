@@ -23,9 +23,7 @@ struct InputPillTimeView: View {
             VStack(spacing: 20) {
                 ProgressbarView(progress: progress)
                     .onAppear {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            progress = 50.0
-                        }
+                        progress = 50.0
                     }
                 
                 Text("복약 시간")

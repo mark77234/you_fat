@@ -11,7 +11,7 @@ struct InputBodyView: View {
     @EnvironmentObject var router: Router
     @State private var height: String = ""
     @State private var weight: String = ""
-    @State private var progress = 0.0
+    @State private var progress = 10.0
     
     var body: some View {
         ZStack {

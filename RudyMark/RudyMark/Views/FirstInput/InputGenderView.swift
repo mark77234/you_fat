@@ -11,7 +11,7 @@ struct InputGenderView: View {
     @EnvironmentObject var router: Router
     
     @State private var selectedGender: String? = nil
-    @State private var progress = 0.0
+    @State private var progress = 10.0
     
     var body: some View {
         ZStack {
@@ -20,9 +20,7 @@ struct InputGenderView: View {
             VStack(spacing: 20) {
                 ProgressbarView(progress: progress)
                     .onAppear {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            progress = 25.0
-                        }
+                        progress = 25.0
                     }
                 
                 Text("성별")

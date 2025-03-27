@@ -10,7 +10,7 @@ import SwiftUI
 struct InputBloodTimeView: View {
     @EnvironmentObject var router: Router
     
-    @State private var progress = 75.0
+    @State private var progress = 50.0
     @State private var selectedTimes: Set<String> = []
     
     let timeSlots = ["오전 6시-9시", "오전 9시-12시", "오후 12시-3시", "오후 3시-6시", "오후 6시-9시", "그 외 시간"]
@@ -21,6 +21,9 @@ struct InputBloodTimeView: View {
             
             VStack(spacing: 40) {
                 ProgressbarView(progress: progress)
+                    .onAppear {
+                        progress = 75.0
+                    }
                     .padding(.top)
                 
                 Text("혈당 체크 시간")
