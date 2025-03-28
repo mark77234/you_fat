@@ -19,44 +19,52 @@ struct InputBloodTimeView: View {
         ZStack {
             Color.skyblue.ignoresSafeArea()
             
-            VStack(spacing: 40) {
+            VStack(spacing: 0) {
+                
                 ProgressbarView(progress: progress)
                     .onAppear {
                         progress = 75.0
                     }
+                    .padding(.vertical)
                     .padding(.top)
                 
-                Text("혈당 체크 시간")
-                    .font(.title2).fontWeight(.bold)
                 
-                Text("선호하는 혈당 체크 시간대를 2개 이상 선택해주세요")
-                    .font(.system(size: 15))
-                    .foregroundColor(.gray)
-                
-                // 시간 선택 버튼들
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 2), spacing: 10) {
-                    ForEach(timeSlots, id: \.self) { time in
-                        Button(action: {
-                            if selectedTimes.contains(time) {
-                                selectedTimes.remove(time)
-                            } else {
-                                selectedTimes.insert(time)
+                VStack(spacing: 26) {
+                    Text("혈당 체크 시간")
+                        .font(.title2).fontWeight(.bold)
+                    
+                    Text("선호하는 혈당 체크 시간대를 2개 이상 선택해주세요")
+                        .font(.system(size: 15))
+                        .foregroundColor(.gray)
+                }
+                .padding(.vertical)
+                VStack{
+                    // 시간 선택 버튼들
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 2), spacing: 10) {
+                        ForEach(timeSlots, id: \.self) { time in
+                            Button(action: {
+                                if selectedTimes.contains(time) {
+                                    selectedTimes.remove(time)
+                                } else {
+                                    selectedTimes.insert(time)
+                                }
+                            }) {
+                                Text(time)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(selectedTimes.contains(time) ? Color.primaryGreen.opacity(0.3) : Color.white)
+                                    .foregroundStyle(.black)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.gray, lineWidth: 1)
+                                    )
+                                    .cornerRadius(10)
                             }
-                        }) {
-                            Text(time)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(selectedTimes.contains(time) ? Color.primaryGreen.opacity(0.3) : Color.white)
-                                .foregroundStyle(.black)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                )
-                                .cornerRadius(10)
                         }
                     }
                 }
-                .padding(.horizontal)
+                
+                Spacer()
                 
                 // 다음 버튼 (2개 이상 선택해야 활성화)
                 Button(action: {
@@ -70,9 +78,11 @@ struct InputBloodTimeView: View {
                         .cornerRadius(10)
                 }
                 .disabled(selectedTimes.count < 2)
+                .padding(.bottom, 24)
             }
-            .padding()
-            .background(Color.white.cornerRadius(20))
+            .padding(.horizontal, 24)
+            .frame(height: 466/852 * UIScreen.main.bounds.height)
+            .background(Color(.white).cornerRadius(20))
             .padding(.horizontal, 24)
         }
     }

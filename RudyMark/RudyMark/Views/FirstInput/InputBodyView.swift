@@ -17,18 +17,25 @@ struct InputBodyView: View {
         ZStack {
             Color.skyblue.ignoresSafeArea()
             
-            VStack(spacing: 20) {
+            VStack(spacing: 0) {
                 ProgressbarView(progress: progress)
+                    .padding(.vertical)
+                    .padding(.top)
                 
                 Text("신체 정보")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .padding(.top, 10)
+                    .padding(.top, 26)
                 
-                VStack(spacing: 15) { // 입력 필드 그룹
+                Spacer()
+                
+                VStack(spacing: 30) { // 입력 필드 그룹
                     InputField(title: "키 (cm)", text: $height)
                     InputField(title: "몸무게 (kg)", text: $weight)
                 }
+                .padding(.top, -30)
+                
+                Spacer()
                 
                 // NextButton
                 NextButton(isEnabled: !height.isEmpty && !weight.isEmpty) {
@@ -40,12 +47,14 @@ struct InputBodyView: View {
                         Image(systemName: "arrow.right")
                     }
                 }
+                .padding(.bottom, 24)
                 
             }
             .padding(.horizontal, 24)
-            .frame(height: 389/852 * UIScreen.main.bounds.height)
+            .frame(height: 466/852 * UIScreen.main.bounds.height)
             .background(Color(.white).cornerRadius(20))
             .padding(.horizontal, 24)
+            
         }
     }
 }
@@ -57,7 +66,7 @@ struct InputField: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
-                .font(.caption)
+                .font(.system(size: 15))
                 .foregroundStyle(.gray)
             TextField(title, text: $text)
                 .textFieldStyle(RoundedBorderTextFieldStyle())

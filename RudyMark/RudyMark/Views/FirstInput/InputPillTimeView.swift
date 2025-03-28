@@ -20,15 +20,19 @@ struct InputPillTimeView: View {
         ZStack {
             Color.skyblue.ignoresSafeArea()
             
-            VStack(spacing: 20) {
+            VStack(spacing: 0) {
                 ProgressbarView(progress: progress)
                     .onAppear {
                         progress = 50.0
                     }
+                    .padding(.vertical)
+                    .padding(.top)
+                
                 
                 Text("복약 시간")
                     .frame(alignment: .leading)
                     .font(.title2).fontWeight(.bold)
+                    .padding(.top, 26)
                 
                 HStack{
                     Text("식사 후 몇 시간 뒤에 약을 복용하시나요?")
@@ -36,6 +40,7 @@ struct InputPillTimeView: View {
                         .padding(.leading, 3)
                     Spacer()
                 }
+                .padding(.vertical)
                 
                 // 복약 시간 선택 뷰
                 Menu {
@@ -55,16 +60,20 @@ struct InputPillTimeView: View {
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
                 }
+                .padding(.top, 10)
+                
+                Spacer()
                 
                 NextButton(isEnabled: true, action: {
                     router.push(.InputBloodTime)
                 }, label: {
                     Text("다음")
                 })
+                .padding(.bottom, 24)
                 
             }
             .padding(.horizontal, 24)
-            .frame(height: 315/852 * UIScreen.main.bounds.height)
+            .frame(height: 466/852 * UIScreen.main.bounds.height)
             .background(Color(.white).cornerRadius(20))
             .padding(.horizontal, 24)
         }
