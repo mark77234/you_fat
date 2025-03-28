@@ -11,24 +11,27 @@ struct InputGenderView: View {
     @EnvironmentObject var router: Router
     
     @State private var selectedGender: String? = nil
-    @State private var progress = 0.0
+    @State private var progress = 10.0
     
     var body: some View {
         ZStack {
             Color.skyblue.ignoresSafeArea()
             
-            VStack(spacing: 20) {
+            VStack(spacing: 0) {
                 ProgressbarView(progress: progress)
                     .onAppear {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            progress = 25.0
-                        }
+                        progress = 25.0
                     }
+                    .padding(.vertical)
+                    .padding(.top)
                 
                 Text("성별")
                     .font(.title2).fontWeight(.bold)
+                    .padding(.top, 26)
                 
-                HStack(spacing: 20) {
+                Spacer()
+                
+                HStack(spacing: 30) {
                     SelectableButton(text: "남성", isSelected: selectedGender == "남성") {
                         selectedGender = "남성"
                     }
@@ -37,16 +40,20 @@ struct InputGenderView: View {
                         selectedGender = "여성"
                     }
                 }
+                .padding(.vertical)
+                
+                Spacer()
                 
                 NextButton(isEnabled: selectedGender != nil, action: {
                     router.push(.InputPillTime)
                 }, label: {
                     Text("다음")
                 })
+                .padding(.bottom, 24)
                 
             }
             .padding(.horizontal, 24)
-            .frame(height: 306/852 * UIScreen.main.bounds.height)
+            .frame(height: 466/852 * UIScreen.main.bounds.height)
             .background(Color(.white).cornerRadius(20))
             .padding(.horizontal, 24)
         }

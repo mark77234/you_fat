@@ -22,6 +22,6 @@ struct FirstInputView: View {
                     }
                 }
         }
-        .environmentObject(router)
+        .environmentObject(router) // 여기 선언해야 자식뷰에 일일이 넘겨주지 않아도 됨
     }
 }
