@@ -31,7 +31,7 @@ struct InputGenderView: View {
                 
                 Spacer()
                 
-                VStack(spacing: 30) {
+                HStack(spacing: 30) {
                     SelectableButton(text: "남성", isSelected: selectedGender == "남성") {
                         selectedGender = "남성"
                     }
