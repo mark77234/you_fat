@@ -68,7 +68,8 @@ struct InputBloodTimeView: View {
                 
                 // 다음 버튼 (2개 이상 선택해야 활성화)
                 Button(action: {
-                    router.push(.Home) // 다음 화면으로 이동
+                    router.popToRoot() // 모든 뷰를 pop하여 처음 화면으로 이동
+                    router.push(.Home)
                 }) {
                     Text("완료")
                         .frame(maxWidth: .infinity)

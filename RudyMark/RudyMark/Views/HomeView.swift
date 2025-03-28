@@ -27,6 +27,7 @@ struct HomeView: View {
                 .grayBackground
             )
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
