@@ -18,7 +18,7 @@ struct FirstInputView: View {
                     case .InputGender: InputGenderView()
                     case .InputPillTime: InputPillTimeView()
                     case .InputBloodTime: InputBloodTimeView()
-                    case .Home: HomeView()
+                    case .Home: TabBar()
                     }
                 }
         }

@@ -14,20 +14,21 @@ struct HomeView: View {
         ZStack{
             Color.greenBackground
                 .ignoresSafeArea()
-            VStack(
-                spacing: 30
-            ){
-                ForEach(viewModel.cards, id: \.title){
-                    card in CardView(card: card)
+            ScrollView{
+                VStack(
+                    spacing: 30
+                ){
+                    ForEach(viewModel.cards, id: \.title){
+                        card in CardView(card: card)
+                    }
                 }
+                .padding(.top, 50)
+                .padding(.bottom, 50)
+                .background(
+                    .grayBackground
+                )
             }
-            .padding(.top, 50)
-            .padding(.bottom, 50)
-            .background(
-                .grayBackground
-            )
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 
