@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MiniCard{
+struct HomeMiniCard{
     let title: String
     var value: String? // 일단 String 추후 Float으로 교체
     var progress: Float?
@@ -15,7 +15,7 @@ struct MiniCard{
     var barColor: Color?
 }
 
-struct CardData {
+struct HomeCardData {
     let title: String
     var description: String?
     let backgroundColor: Color
@@ -25,7 +25,7 @@ struct CardData {
     var progress: Float?
     var max: Float?
     var cardCount: Int?
-    var miniCards: [MiniCard]?
+    var miniCards: [HomeMiniCard]?
     var miniCardsColor: Color?
     var miniCardsSize: CGFloat?
 }

@@ -8,11 +8,11 @@
 import SwiftUI
 
 class HomeViewModel : ObservableObject {
-    @Published var cards: [CardData] = []
+    @Published var cards: [HomeCardData] = []
     
     init(){
         self.cards = [
-            CardData(
+            HomeCardData(
                 title:"안녕하세요 !",
                 description: "오늘의 칼로리 및 혈당수치를 확인하세요.",
                 backgroundColor: Color.white,
@@ -20,7 +20,7 @@ class HomeViewModel : ObservableObject {
                 subTextColor: Color.gray,
                 height: 100
             ),
-            CardData(
+            HomeCardData(
                 title:"오늘의 칼로리",
                 description: nil,
                 backgroundColor: Color.white,
@@ -31,27 +31,27 @@ class HomeViewModel : ObservableObject {
                 max: 2000,
                 cardCount: 3,
                 miniCards: [
-                    MiniCard(title: "탄수화물", progress: 250, max: 300,barColor: Color.blue),
-                    MiniCard(title: "단백질", progress: 80, max: 100,barColor: Color.red),
-                    MiniCard(title: "지방", progress: 50, max: 70,barColor: Color.green)
+                    HomeMiniCard(title: "탄수화물", progress: 250, max: 300,barColor: Color.blue),
+                    HomeMiniCard(title: "단백질", progress: 80, max: 100,barColor: Color.red),
+                    HomeMiniCard(title: "지방", progress: 50, max: 70,barColor: Color.green)
                             ],
                 miniCardsColor: .skyblue,
                 miniCardsSize: 100
             ),
-            CardData(
+            HomeCardData(
                 title:"오늘의 평균혈당",
                 backgroundColor: Color.white,
                 mainTextColor: Color.black,
                 subTextColor: Color.black,
                 height: 110,
                 miniCards:[
-                    MiniCard(title:"평균혈당",value:"126 mg/dL"),
-                    MiniCard(title:"측정횟수",value:"3회")
+                    HomeMiniCard(title:"평균혈당",value:"126 mg/dL"),
+                    HomeMiniCard(title:"측정횟수",value:"3회")
                 ],
                 miniCardsColor: .lightRed,
                 miniCardsSize: 80
             ),
-            CardData(
+            HomeCardData(
                 title:"오늘의 조언",
                 description: "혈당 관리를 위해 저녁 식사에는 탄수화물 섭취를 줄이고 단백질과 채소 위주로 드시는 것이 좋습니다.",
                 backgroundColor: .skyblue,

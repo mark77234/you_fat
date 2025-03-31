@@ -33,7 +33,7 @@ struct HomeView: View {
 }
 
 struct CardView: View{
-    let card: CardData
+    let card: HomeCardData
     
     var body: some View{
         VStack(alignment: .leading,spacing: 20){
@@ -86,7 +86,7 @@ struct CardView: View{
 }
 
 struct MiniCardView : View{
-    let miniCard: MiniCard
+    let miniCard: HomeMiniCard
     let cardHeight: CGFloat
     
     var body: some View{
