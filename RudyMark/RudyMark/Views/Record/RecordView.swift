@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RecordView: View {
+    @StateObject var viewModel = RecordViewModel()
     var body: some View {
         ZStack{
             Color.greenBackground
@@ -16,7 +17,9 @@ struct RecordView: View {
                 VStack(
                     spacing: 30
                 ){
-                    CardView2()
+                    ForEach(viewModel.cards, id: \.title){
+                        card in CardView(card: card)
+                    }
                 }
                 .padding(.top, 50)
                 .padding(.bottom, 50)
@@ -25,26 +28,6 @@ struct RecordView: View {
                 )
             }
         }
-    }
-}
-
-struct CardView2: View{
-    
-    var body: some View{
-        VStack(alignment: .leading,spacing: 20){
-            HStack{
-                Text("기록뷰입니다")
-                    .font(.headline)
-                    .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity,alignment: .leading)
-            }
-            
-        }
-        .padding()
-        .frame(maxWidth: .infinity,minHeight: 110)
-        .background(.gray)
-        .cornerRadius(12)
-        .padding(.horizontal)
     }
 }
 
