@@ -9,19 +9,27 @@ import SwiftUI
 import Charts
 
 struct SugarStatsView: View {
+    @StateObject private var viewModel = SugarStatsViewModel()
+    
     var body: some View {
-        
-        let weeklyCalories: [(day: String, calories: Int)] = [
-            ("06", 130), ("09", 200), ("12", 100), ("15", 150), ("18", 200), ("21", 180), ("00", 80)
-        ]
-        
-        let width_1 = 26/393 * UIScreen.main.bounds.width
         
         ZStack {
             Color.grayBackground.ignoresSafeArea()
             
             ScrollView {
                 VStack(alignment: .center) {
+                    DateSelectionView(viewModel: viewModel)
+                    
+                    SugarChartView(data: [
+                        (day: "월", value: 100),
+                        (day: "화", value: 120),
+                        (day: "수", value: 90),
+                        (day: "목", value: 110),
+                        (day: "금", value: 130),
+                        (day: "토", value: 95),
+                        (day: "일", value: 105)
+                    ])
+                    
                     VStack(spacing: 16) {
                         HStack {
                             Text("혈당 수치")
@@ -31,18 +39,12 @@ struct SugarStatsView: View {
                         }
                         .padding(.top)
                         
-                        Chart {
-                            ForEach(weeklyCalories, id: \.day) { data in
-                                BarMark(
-                                    x: .value("요일", data.day),
-                                    y: .value("칼로리", data.calories),
-                                    width: MarkDimension(floatLiteral: width_1)
-                                )
-                                .foregroundStyle(.red)
-                            }
+                        HStack {
+                            StatBox(title: "평균 단백질", value: "102 g", color: .lightYellow)
+                            StatBox(title: "평균 지방", value: "63 g", color: .lightRed)
                         }
                         .padding()
-                        .frame(width: 343/393 * UIScreen.main.bounds.width, height: 332/852 * UIScreen.main.bounds.height)
+                        .background(RoundedRectangle(cornerRadius: 16).fill(.white))
                         
                     }
                     .chartYAxis {
@@ -64,7 +66,6 @@ struct SugarStatsView: View {
                             .fill(.white)
                     )
                     
-                    
                     AnalysisView(text: "이번 주 탄수화물 섭취량이 목표보다 약간 높습니다. 저녁 식사에서 탄수화물 섭취를 줄이고 단백질 섭취를 늘리는 것이 좋습니다.")
                 }
                 .padding()
@@ -72,9 +73,11 @@ struct SugarStatsView: View {
         }
     }
 }
+
 #Preview {
     SugarStatsView()
 }
+
 
 struct StatBox: View {
     let title: String
@@ -119,5 +122,65 @@ struct AnalysisView: View {
                 .stroke(Color.blueStroke, lineWidth: 1)
         )
         .padding()
+    }
+}
+
+import SwiftUI
+
+struct DateSelectionView: View {
+    @ObservedObject var viewModel: SugarStatsViewModel
+    
+    var body: some View {
+        HStack {
+            Button(action: { viewModel.changeDate(by: -7) }) {
+                Image(systemName: "chevron.left")
+            }
+            
+            Text(viewModel.formattedDate())
+                .font(.system(size: 14, weight: .medium))
+            
+            Button(action: { viewModel.changeDate(by: 7) }) {
+                Image(systemName: "chevron.right")
+            }
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(10)
+    }
+}
+
+import SwiftUI
+import Charts
+
+struct SugarChartView: View {
+    let data: [(day: String, value: Int)]
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            HStack {
+                Text("혈당 수치")
+                    .font(.system(size: 15, weight: .medium))
+                    .padding(.leading)
+                Spacer()
+            }
+            .padding(.top)
+            
+            Chart {
+                ForEach(Array(data.enumerated()), id: \.offset) { index, entry in
+                    BarMark(
+                        x: .value("요일", entry.day),
+                        y: .value("수치", entry.value)
+                    )
+                    .foregroundStyle(.red)
+                }
+            }
+            .padding()
+            .frame(width: 343, height: 332)
+        }
+        .chartYAxis {
+            AxisMarks(position: .leading)
+        }
+        .background(RoundedRectangle(cornerRadius: 16).fill(.white))
+        .padding(.horizontal)
     }
 }

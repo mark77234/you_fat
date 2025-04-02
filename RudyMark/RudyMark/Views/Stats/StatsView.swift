@@ -31,6 +31,6 @@ struct StatsView: View {
     }
 }
 
-#Preview {
-    StatsView()
-}
+//#Preview {
+//    StatsView()
+//}

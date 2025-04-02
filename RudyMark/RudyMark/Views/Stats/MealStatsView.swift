@@ -54,8 +54,6 @@ struct MealStatsView: View {
                             .fill(.white)
                     )
                     .padding(.horizontal)
-
-
                     
                     VStack(spacing: 16) {
                         HStack {
