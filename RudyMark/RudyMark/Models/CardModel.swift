@@ -15,6 +15,14 @@ struct MiniCard{
     var barColor: Color?
 }
 
+struct CustomButton{
+    let name: String
+    let buttonColor: Color?
+    var icon: String?
+    var destination: AnyView?
+    
+}
+
 struct CardData {
     let title: String
     var description: String?
@@ -28,4 +36,5 @@ struct CardData {
     var miniCards: [MiniCard]?
     var miniCardsColor: Color?
     var miniCardsSize: CGFloat?
+    var MealButtons: [CustomButton]?
 }

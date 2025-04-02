@@ -8,12 +8,29 @@
 import SwiftUI
 
 struct RecordView: View {
+    @StateObject var viewModel = RecordViewModel()
     var body: some View {
-        Text("기록 페이지 입니다")
-            .font(.title)
-            .padding()
+        ZStack{
+            Color.greenBackground
+                .ignoresSafeArea()
+            ScrollView{
+                VStack(
+                    spacing: 30
+                ){
+                    ForEach(viewModel.cards, id: \.title){
+                        card in CardView(card: card)
+                    }
+                }
+                .padding(.top, 50)
+                .padding(.bottom, 50)
+                .background(
+                    .grayBackground
+                )
+            }
+        }
     }
 }
+
 
 #Preview {
     RecordView()
