@@ -1,10 +1,10 @@
+////
+////  Card.swift
+////  RudyMark
+////
+////  Created by 이병찬 on 3/31/25.
+////
 //
-//  Card.swift
-//  RudyMark
-//
-//  Created by 이병찬 on 3/31/25.
-//
-
 import SwiftUI
 
 struct CardView: View{
