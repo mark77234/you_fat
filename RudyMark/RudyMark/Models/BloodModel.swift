@@ -6,17 +6,24 @@
 //
 
 
-//import SwiftUI
-//
-//struct BloodMeasurement {
-//    var bloodSugar: String
-//    var selectedMealState: MealState?
-//    var waterIntake: Int
-//    var memo: String
-//}
-//
-//enum MealState: String, CaseIterable {
-//    case fasting = "공복"
-//    case beforeMeal = "식전"
-//    case afterMeal = "식후"
-//}
+import SwiftUI
+
+struct BloodData {
+    var bloodSugar: String
+    var selectedMealState: String?
+    var waterIntake: Int
+    var memo: String
+
+    // 기본값이 있는 생성자 추가 ✅
+    init(
+        bloodSugar: String = "",
+        selectedMealState: String? = nil,
+        waterIntake: Int = 0,
+        memo: String = ""
+    ) {
+        self.bloodSugar = bloodSugar
+        self.selectedMealState = selectedMealState
+        self.waterIntake = waterIntake
+        self.memo = memo
+    }
+}

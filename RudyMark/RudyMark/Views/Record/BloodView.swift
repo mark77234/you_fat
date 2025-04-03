@@ -8,6 +8,8 @@
 import SwiftUI
 
 // View 정의
+
+// View 정의
 struct BloodView: View {
     @StateObject private var viewModel = BloodViewModel()
 
@@ -18,16 +20,15 @@ struct BloodView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("혈당 수치 (mg/dL)")
                         .font(.headline)
-                    TextField("혈당 수치를 입력하세요", text: $viewModel.bloodSugar)
-                        .padding() // 내부 여백 추가
-                        .frame(height: 50) // 입력 칸 높이 조정
-                        .background(Color.white) // 배경을 흰색으로 설정
+                    TextField("혈당 수치를 입력하세요", text: $viewModel.data.bloodSugar)
+                        .padding()
+                        .frame(height: 50)
+                        .background(Color.white)
                         .overlay(
-                            RoundedRectangle(cornerRadius: 10) // 둥근 사각형 테두리 추가
-                                .stroke(Color.gray, lineWidth: 1) // 회색 테두리 적용
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.gray, lineWidth: 1)
                         )
                         .padding(.horizontal)
-                        
                 }
             }
 
@@ -39,13 +40,13 @@ struct BloodView: View {
                     HStack {
                         ForEach(viewModel.mealStates, id: \.self) { state in
                             Button(action: {
-                                viewModel.selectedMealState = state
+                                viewModel.data.selectedMealState = state
                             }) {
                                 Text(state)
                                     .padding()
                                     .frame(maxWidth: .infinity)
-                                    .background(viewModel.selectedMealState == state ? Color.blue.opacity(0.8) : Color.gray.opacity(0.2))
-                                    .foregroundColor(.white)
+                                    .background(viewModel.data.selectedMealState == state ? Color.red : Color.gray.opacity(0.3))
+                                    .foregroundColor(viewModel.data.selectedMealState == state ? Color.white : Color.black)
                                     .cornerRadius(10)
                             }
                         }
@@ -56,52 +57,61 @@ struct BloodView: View {
             // 물 섭취량 조절 카드
             BloodCardView {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("물 섭취량 (ml)")
+                    Text("물 섭취량 (1컵 - 200ml)")
                         .font(.headline)
                     HStack {
-                        Button(action: viewModel.decreaseWater) {
+                        Button(action: viewModel.decreaseWater) { // ✅ 수정
                             Image(systemName: "minus.circle.fill")
-                                .font(.largeTitle)
+                                .font(.title)
                                 .foregroundColor(.red)
                         }
-                        Text("\(viewModel.waterIntake)")
+                        Text("\(viewModel.data.waterIntake) 컵")
                             .font(.title)
-                            .frame(width: 50)
-                        Button(action: viewModel.increaseWater) {
+                        Button(action: viewModel.increaseWater) { // ✅ 수정
                             Image(systemName: "plus.circle.fill")
-                                .font(.largeTitle)
-                                .foregroundColor(.green)
+                                .font(.title)
+                                .foregroundColor(.blue)
                         }
                     }
                 }
             }
 
-            // 메모 입력 카드
+            // 메모 입력
             BloodCardView {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("메모")
                         .font(.headline)
-                    TextEditor(text: $viewModel.memo)
-                        .frame(height: 80)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
+                    ZStack(alignment: .topLeading) {
+                        if viewModel.data.memo.isEmpty {
+                            Text("메모를 작성하세요")
+                                .foregroundColor(.gray)
+                                .padding(.top, 8)
+                                .padding(.leading, 5)
+                        }
+                        TextEditor(text: $viewModel.data.memo)
+                            .frame(height: 80)
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
+                    }
                 }
             }
 
             // 측정 기록 버튼
-            Button(action: viewModel.saveMeasurement) {
+            Button(action: viewModel.saveMeasurement) { // ✅ 수정
                 HStack {
                     Image(systemName: "plus")
                     Text("측정 기록하기")
                 }
                 .foregroundColor(.white)
                 .font(.headline)
-                .padding()
                 .frame(maxWidth: .infinity)
+                .padding()
                 .background(Color.red)
-                .cornerRadius(10)
+                .cornerRadius(12)
+                .padding(.horizontal, 30)
             }
         }
-        .padding()
+        .padding(.vertical, 50)
+        .background(Color.gray.opacity(0.1))
     }
 }
 
@@ -117,9 +127,11 @@ struct BloodCardView<Content: View>: View {
         VStack {
             content
         }
+        .frame(maxWidth: .infinity)
         .padding()
         .background(Color.white)
         .cornerRadius(12)
+        .padding(.horizontal, 30)
     }
 }
 
