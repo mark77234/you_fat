@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-
-// MARK: - Main View
+// MARK: - MoreView
 struct MoreView: View {
-    @ObservedObject var viewModel = MoreViewModel()
+    @StateObject private var viewModel = MoreViewModel()
     
     // 4열 그리드
     let columns = [
@@ -21,12 +20,11 @@ struct MoreView: View {
     ]
     
     var body: some View {
-        NavigationView {
+        NavigationView{
             ScrollView {
-                
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(viewModel.items) { item in
-                        // NavigationLink를 사용해 페이지 이동
+                        // 각 메뉴 아이템에 대한 NavigationLink
                         NavigationLink(destination: item.destination) {
                             VStack(spacing: 8) {
                                 // 아이콘
@@ -39,7 +37,7 @@ struct MoreView: View {
                                 // 타이틀
                                 Text(item.title)
                                     .font(.caption)
-                                    .foregroundColor(Color.white)
+                                    .foregroundColor(.white)
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
@@ -50,12 +48,34 @@ struct MoreView: View {
                 }
                 .padding()
             }
-            .navigationTitle("더보기")
-            // 배경색을 짙은 다크 스타일로
-            .background(.grayBackground)
+            .toolbar {
+                // principal 위치에 HStack을 사용해 "더보기" 타이틀과 gear 아이콘을 한 줄에 배치
+                ToolbarItem(placement: .principal) {
+                    HStack {
+                        Text("더보기")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        Spacer()
+                        NavigationLink(destination: ProfileSettingView()) {
+                            Image(systemName: "person.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(.black)
+                        }
+                        NavigationLink(destination: SettingsView()) {
+                            Image(systemName: "gear")
+                                .font(.system(size: 24))
+                                .foregroundColor(.black)
+                        }
+                    }
+                    .padding()
+                }
+            }
+            .background(Color.grayBackground)
         }
     }
 }
+
+
 
 // MARK: - Preview
 struct MoreView_Previews: PreviewProvider {
