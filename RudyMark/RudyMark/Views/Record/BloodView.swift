@@ -7,9 +7,6 @@
 
 import SwiftUI
 
-// View 정의
-
-// View 정의
 struct BloodView: View {
     @StateObject private var viewModel = BloodViewModel()
 
@@ -54,20 +51,19 @@ struct BloodView: View {
                 }
             }
 
-            // 물 섭취량 조절 카드
             BloodCardView {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("물 섭취량 (1컵 - 200ml)")
                         .font(.headline)
                     HStack {
-                        Button(action: viewModel.decreaseWater) { // ✅ 수정
+                        Button(action: viewModel.decreaseWater) {
                             Image(systemName: "minus.circle.fill")
                                 .font(.title)
                                 .foregroundColor(.red)
                         }
                         Text("\(viewModel.data.waterIntake) 컵")
                             .font(.title)
-                        Button(action: viewModel.increaseWater) { // ✅ 수정
+                        Button(action: viewModel.increaseWater) {
                             Image(systemName: "plus.circle.fill")
                                 .font(.title)
                                 .foregroundColor(.blue)
@@ -76,7 +72,6 @@ struct BloodView: View {
                 }
             }
 
-            // 메모 입력
             BloodCardView {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("메모")
@@ -95,8 +90,7 @@ struct BloodView: View {
                 }
             }
 
-            // 측정 기록 버튼
-            Button(action: viewModel.saveMeasurement) { // ✅ 수정
+            Button(action: viewModel.saveMeasurement) {
                 HStack {
                     Image(systemName: "plus")
                     Text("측정 기록하기")
@@ -115,7 +109,6 @@ struct BloodView: View {
     }
 }
 
-// 공통 카드 뷰 컴포넌트
 struct BloodCardView<Content: View>: View {
     let content: Content
 
@@ -135,7 +128,6 @@ struct BloodCardView<Content: View>: View {
     }
 }
 
-// 프리뷰
 struct BloodView_Previews: PreviewProvider {
     static var previews: some View {
         BloodView()
