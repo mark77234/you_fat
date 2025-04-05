@@ -67,7 +67,6 @@ struct MoreView: View {
                                 .foregroundColor(.black)
                         }
                     }
-                    .padding()
                 }
             }
             .background(Color.grayBackground)
