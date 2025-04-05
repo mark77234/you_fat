@@ -10,8 +10,8 @@ class FoodViewModel: ObservableObject {
     @Published var foods: [NutriItem] = []
     private let apiService = FoodAPIService()
 
-    func loadFoods() {
-        apiService.fetchNutrition(foodName:"바나나") { [weak self] items in
+    func loadFoods(foodName: String) {
+        apiService.fetchNutrition(foodName:foodName) { [weak self] items in
             self?.foods = items
         }
     }
