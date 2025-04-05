@@ -1,4 +1,4 @@
-//
+ //
 //  RudyMarkApp.swift
 //  RudyMark
 //
@@ -11,7 +11,8 @@ import SwiftUI
 struct RudyMarkApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            FirstInputView()
         }
     }
 }
+
