@@ -21,9 +21,9 @@ class RecordViewModel : ObservableObject {
                 height: 150,
                 MealButtons: [
                     CustomButton(name:"식사 기록하기",
-                                 buttonColor: .lightPurple,
+                                 buttonColor: .deepPurple,
                                  icon:"plus",
-                                 destination: AnyView(MealView()))
+                                 destination: AnyView(FoodAPIServiceView()))
                 ]
             ),
             CardData(

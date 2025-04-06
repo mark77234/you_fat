@@ -41,7 +41,7 @@ struct MoreView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
-                            .background(Color.lightPurple)
+                            .background(Color.deepPurple)
                             .cornerRadius(8)
                         }
                     }
