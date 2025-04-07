@@ -16,38 +16,74 @@ import SwiftUI
 import SwiftData
 
 struct CSVTestView: View {
-    @Query var foods: [Food]  // SwiftData에서 Food 모델 전체 불러오기
+    @Environment(\.modelContext) private var context
+    @State private var foods: [Food] = []
+    @State private var searchQuery: String = ""
 
     var body: some View {
         NavigationView {
-            List(foods.prefix(10)) { food in
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(food.name)
-                        .font(.headline)
-
-                    HStack {
-                        Text("칼로리: \(food.kcal, specifier: "%.1f") kcal")
-                        Spacer()
-                        Text("탄수화물: \(food.carbs, specifier: "%.1f") g")
+            VStack {
+                TextField("음식 검색", text: $searchQuery)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                    .onChange(of: searchQuery) { newValue in
+                        fetchFoods()
                     }
-                    .font(.subheadline)
 
-                    HStack {
-                        Text("단백질: \(food.protein, specifier: "%.1f") g")
-                        Spacer()
-                        Text("지방: \(food.fat, specifier: "%.1f") g")
+                if !searchQuery.isEmpty {
+                    if foods.isEmpty {
+                        Text("검색 결과가 없습니다.")
+                            .foregroundColor(.gray)
+                            .padding()
+                    } else {
+                        List(foods) { food in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(food.name)
+                                    .font(.headline)
+
+                                HStack {
+                                    Text("칼로리: \(food.kcal, specifier: "%.1f") kcal")
+                                    Spacer()
+                                    Text("탄수화물: \(food.carbs, specifier: "%.1f") g")
+                                }
+                                .font(.subheadline)
+
+                                HStack {
+                                    Text("단백질: \(food.protein, specifier: "%.1f") g")
+                                    Spacer()
+                                    Text("지방: \(food.fat, specifier: "%.1f") g")
+                                }
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                            }
+                            .padding(.vertical, 4)
+                        }
                     }
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                } else {
+                    Spacer()
+                    Text("음식 이름을 검색해보세요")
+                        .foregroundColor(.gray)
+                        .padding()
                 }
-                .padding(.vertical, 4)
             }
-            .navigationTitle("CSV 식품 리스트")
+            .navigationTitle("식품 검색")
         }
     }
-}
 
-#Preview
-{
-    CSVTestView()
+    private func fetchFoods() {
+        guard !searchQuery.isEmpty else {
+            foods = []
+            return
+        }
+
+        do {
+            let descriptor = FetchDescriptor<Food>(
+                predicate: #Predicate { $0.name.localizedStandardContains(searchQuery) }
+            )
+            foods = try context.fetch(descriptor)
+        } catch {
+            print("🔴 검색 실패: \(error)")
+            foods = []
+        }
+    }
 }

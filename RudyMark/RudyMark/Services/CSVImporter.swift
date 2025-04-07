@@ -22,7 +22,7 @@ class CSVImporter {
         self.modelContext = modelContext
     }
 
-    func importFoodsFromCSV() {
+    func importFoodsFromCSV(searchQuery: String? = nil) {
         guard let fileURL = Bundle.main.url(forResource: "foodData", withExtension: "csv") else {
             print("CSV 파일을 찾을 수 없습니다.")
             return
@@ -37,10 +37,10 @@ class CSVImporter {
                 return
             }
 
-            // 쉼표로 구분하도록 변경
+            // 쉼표로 구분된 CSV 파일에 맞게 분리
             let columns = headerLine.components(separatedBy: ",")
-
-            // CSV 파일에 맞는 열 이름 찾기
+            
+            // 필요한 열 인덱스 찾기
             guard let nameIndex = columns.firstIndex(of: "식품명"),
                   let kcalIndex = columns.firstIndex(of: "에너지(kcal)"),
                   let carbsIndex = columns.firstIndex(of: "탄수화물(g)"),
@@ -55,6 +55,12 @@ class CSVImporter {
                 guard values.count > max(nameIndex, kcalIndex, carbsIndex, proteinIndex, fatIndex) else { continue }
 
                 let name = values[nameIndex].trimmingCharacters(in: .whitespacesAndNewlines)
+                
+                // 검색어가 있다면 음식명에 검색어가 포함되어 있는지 확인
+                if let query = searchQuery, !name.lowercased().contains(query.lowercased()) {
+                    continue
+                }
+                
                 let kcal = Double(values[kcalIndex]) ?? 0
                 let carbs = Double(values[carbsIndex]) ?? 0
                 let protein = Double(values[proteinIndex]) ?? 0
