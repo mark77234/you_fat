@@ -18,7 +18,7 @@ struct RudyMarkApp: App {
     
     var body: some Scene {
         WindowGroup {
-            FirstInputView()
+            CSVTestView()
                 .modelContainer(sharedModelContainer)
                 .onAppear {
                     if !UserDefaults.standard.bool(forKey: "hasImportedCSV") {

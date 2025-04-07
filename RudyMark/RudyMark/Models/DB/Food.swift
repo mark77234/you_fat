@@ -9,13 +9,20 @@ import SwiftData
 
 @Model
 class Food{
-    var name : String
-    var calories: String
+    var name: String
+    var kcal: Double
+    var carbs: Double
+    var protein: Double
+    var fat: Double
     
-    init(name: String, calories: String) {
+    init(name: String, kcal: Double, carbs: Double, protein: Double, fat: Double) {
         self.name = name
-        self.calories = calories
+        self.kcal = kcal
+        self.carbs = carbs
+        self.protein = protein
+        self.fat = fat
     }
+    
 }
 
 @Model
