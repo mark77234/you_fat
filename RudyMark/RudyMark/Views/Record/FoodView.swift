@@ -13,23 +13,28 @@ struct FoodAPIServiceView: View {
     var body: some View {
         NavigationView {
             VStack {
-                // 🔍 검색창
                 HStack {
                     TextField("음식 이름을 입력하세요", text: $searchText)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(height: 50)
                         .padding(.horizontal)
+                        .background(Color.white)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10) // 둥근 사각형 테두리 추가
+                                .stroke(Color.gray, lineWidth: 1) // 회색 테두리 적용
+                        )
                     
                     Button(action: {
                         viewModel.loadFoods(foodName: searchText)
                     }) {
                         Image(systemName: "magnifyingglass")
                             .padding(8)
-                            .background(Color.blue.opacity(0.1))
+                            .foregroundColor(.deepPurple)
+                            .background(.lightPurple)
                             .clipShape(Circle())
                     }
                     .padding(.trailing)
                 }
-                .padding(.top)
+                .padding()
 
                 // 📋 결과 리스트
                 List(viewModel.foods) { food in
@@ -52,7 +57,7 @@ struct FoodAPIServiceView: View {
                     .padding(.vertical, 4)
                 }
             }
-            .navigationTitle("영양 정보")
+            .navigationTitle("음식 기록")
         }
     }
 }
