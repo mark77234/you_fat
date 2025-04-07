@@ -64,7 +64,7 @@ struct InputPillTimeView: View {
                 
                 Spacer()
                 
-                NextButton(isEnabled: true, action: {
+                NextButton(isEnabled: selectedOption != "시간 선택", action: {
                     router.push(.InputBloodTime)
                 }, label: {
                     Text("다음")
