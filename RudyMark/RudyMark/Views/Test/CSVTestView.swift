@@ -19,19 +19,37 @@ struct CSVTestView: View {
     @Environment(\.modelContext) private var context
     @State private var foods: [Food] = []
     @State private var searchQuery: String = ""
-
+    
     var body: some View {
         NavigationView {
             VStack {
-                TextField("음식 검색", text: $searchQuery)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                    .onChange(of: searchQuery) { newValue in
+                HStack {
+                    TextField("음식 검색", text: $searchQuery)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding(.horizontal)
+                    
+                    Button(action: {
                         fetchFoods()
+                    }) {
+                        Text("검색")
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
                     }
-
-                if !searchQuery.isEmpty {
+                    .padding(.trailing)
+                }
+                .padding(.top)
+                
+                if searchQuery.isEmpty {
+                    Spacer()
+                    Text("음식 이름을 검색해보세요")
+                        .foregroundColor(.gray)
+                        .padding()
+                } else {
                     if foods.isEmpty {
+                        Spacer()
                         Text("검색 결과가 없습니다.")
                             .foregroundColor(.gray)
                             .padding()
@@ -40,14 +58,14 @@ struct CSVTestView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(food.name)
                                     .font(.headline)
-
+                                
                                 HStack {
                                     Text("칼로리: \(food.kcal, specifier: "%.1f") kcal")
                                     Spacer()
                                     Text("탄수화물: \(food.carbs, specifier: "%.1f") g")
                                 }
                                 .font(.subheadline)
-
+                                
                                 HStack {
                                     Text("단백질: \(food.protein, specifier: "%.1f") g")
                                     Spacer()
@@ -59,24 +77,21 @@ struct CSVTestView: View {
                             .padding(.vertical, 4)
                         }
                     }
-                } else {
-                    Spacer()
-                    Text("음식 이름을 검색해보세요")
-                        .foregroundColor(.gray)
-                        .padding()
                 }
+                Spacer()
             }
             .navigationTitle("식품 검색")
         }
     }
-
+    
     private func fetchFoods() {
         guard !searchQuery.isEmpty else {
             foods = []
             return
         }
-
+        
         do {
+            // 검색어에 해당하는 식품명만 가져오기
             let descriptor = FetchDescriptor<Food>(
                 predicate: #Predicate { $0.name.localizedStandardContains(searchQuery) }
             )
