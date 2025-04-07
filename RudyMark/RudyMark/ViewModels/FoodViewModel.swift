@@ -7,7 +7,7 @@
 import SwiftUI
 
 class FoodViewModel: ObservableObject {
-    @Published var foods: [NutriItem] = []
+    @Published var foods: [FoodData] = []
     private let apiService = FoodAPIService()
 
     func loadFoods(foodName: String) {

@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct NutriItem: Codable, Identifiable {
+struct FoodData: Codable, Identifiable {
     var id: UUID { UUID() }
     let foodNm: String?
     let enerc: String?

@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct FoodAPIServiceView: View {
+struct FoodView: View {
     @StateObject private var viewModel = FoodViewModel()
     @State private var searchText: String = ""
 
@@ -63,5 +63,5 @@ struct FoodAPIServiceView: View {
 }
 
 #Preview {
-    FoodAPIServiceView()
+    FoodView()
 }

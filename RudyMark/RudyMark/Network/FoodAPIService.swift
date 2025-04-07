@@ -18,13 +18,13 @@ struct NutriBody: Codable {
 }
 
 struct NutriItems: Codable {
-    let items: [NutriItem]
+    let items: [FoodData]
 }
 
 // MARK: - API 서비스
 
 class FoodAPIService {
-    func fetchNutrition(foodName: String, completion: @escaping ([NutriItem]) -> Void) {
+    func fetchNutrition(foodName: String, completion: @escaping ([FoodData]) -> Void) {
         guard let encodedFoodName = foodName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                     print("음식 이름 인코딩 실패")
                     return
