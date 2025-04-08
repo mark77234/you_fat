@@ -15,7 +15,7 @@
 import SwiftUI
 import SwiftData
 
-struct CSVTestView: View {
+struct FoodView: View {
     @Environment(\.modelContext) private var context
     @State private var foods: [Food] = []
     @State private var searchQuery: String = ""
@@ -24,19 +24,25 @@ struct CSVTestView: View {
         NavigationView {
             VStack {
                 HStack {
-                    TextField("음식 검색", text: $searchQuery)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    TextField("식사하신 음식을 입력해주세요", text: $searchQuery)
+                        .padding() // 내부 여백 추가
+                        .frame(height: 50) // 입력 칸 높이 조정
+                        .background(Color.white) // 배경을 흰색으로 설정
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10) // 둥근 사각형 테두리 추가
+                                .stroke(Color.gray, lineWidth: 1) // 회색 테두리 적용
+                        )
                         .padding(.horizontal)
                     
                     Button(action: {
                         fetchFoods()
                     }) {
-                        Text("검색")
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 16)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
+                        Image(systemName: "magnifyingglass")
+                                .font(.system(size: 16, weight: .bold))
+                                .padding(10)
+                                .background(.purpleBackground)
+                                .foregroundColor(.deepPurple)
+                                .clipShape(Circle())
                     }
                     .padding(.trailing)
                 }
@@ -101,4 +107,8 @@ struct CSVTestView: View {
             foods = []
         }
     }
+}
+
+#Preview{
+    FoodView()
 }
