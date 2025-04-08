@@ -8,21 +8,22 @@ import SwiftUI
 import SwiftData
 
 @Model
-class Food{
+class Food {
     var name: String
     var kcal: Double
     var carbs: Double
     var protein: Double
     var fat: Double
-    
-    init(name: String, kcal: Double, carbs: Double, protein: Double, fat: Double) {
+    var sugar: Double // 새로 추가된 속성
+
+    init(name: String, kcal: Double, carbs: Double, protein: Double, fat: Double, sugar: Double) {
         self.name = name
         self.kcal = kcal
         self.carbs = carbs
         self.protein = protein
         self.fat = fat
+        self.sugar = sugar
     }
-    
 }
 
 @Model

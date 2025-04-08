@@ -45,14 +45,16 @@ class CSVImporter {
                   let kcalIndex = columns.firstIndex(of: "에너지(kcal)"),
                   let carbsIndex = columns.firstIndex(of: "탄수화물(g)"),
                   let proteinIndex = columns.firstIndex(of: "단백질(g)"),
-                  let fatIndex = columns.firstIndex(of: "지방(g)") else {
+                  let fatIndex = columns.firstIndex(of: "지방(g)"),
+                  let sugarIndex = columns.firstIndex(of: "당류(g)")
+            else {
                 print("필요한 열이 없습니다.")
                 return
             }
 
             for row in rows.dropFirst() {
                 let values = row.components(separatedBy: ",")
-                guard values.count > max(nameIndex, kcalIndex, carbsIndex, proteinIndex, fatIndex) else { continue }
+                guard values.count > max(nameIndex, kcalIndex, carbsIndex, proteinIndex, fatIndex, sugarIndex) else { continue }
 
                 let name = values[nameIndex].trimmingCharacters(in: .whitespacesAndNewlines)
                 
@@ -65,8 +67,9 @@ class CSVImporter {
                 let carbs = Double(values[carbsIndex]) ?? 0
                 let protein = Double(values[proteinIndex]) ?? 0
                 let fat = Double(values[fatIndex]) ?? 0
+                let sugar = Double(values[sugarIndex]) ?? 0
 
-                let food = Food(name: name, kcal: kcal, carbs: carbs, protein: protein, fat: fat)
+                let food = Food(name: name, kcal: kcal, carbs: carbs, protein: protein, fat: fat, sugar: sugar)
                 modelContext.insert(food)
             }
 
