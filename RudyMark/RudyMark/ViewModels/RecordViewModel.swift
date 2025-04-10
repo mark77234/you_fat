@@ -23,7 +23,7 @@ class RecordViewModel : ObservableObject {
                     CustomButton(name:"식사 기록하기",
                                  buttonColor: .lightPurple,
                                  icon:"plus",
-                                 destination: AnyView(MealView()))
+                                 destination: AnyView(FoodView()))
                 ]
             ),
             CardData(

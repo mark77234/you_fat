@@ -39,7 +39,7 @@ struct MealStatsView: View {
                                     y: .value("칼로리", data.calories),
                                     width: MarkDimension(floatLiteral: width_1)
                                 )
-                                .foregroundStyle(.green)
+                                .foregroundStyle(.primaryGreen)
                             }
                         }
                         .padding()
@@ -57,6 +57,13 @@ struct MealStatsView: View {
                     
                     VStack(spacing: 16) {
                         HStack {
+                            Text("요약")
+                                .font(.system(size: 15, weight: .medium))
+                                .padding(.leading)
+                            Spacer()
+                        }
+                        
+                        HStack {
                             StatBox(title: "평균 칼로리", value: "1971 kcal", color: .skyblue)
                             StatBox(title: "평균 탄수화물", value: "240 g", color: .lightGreen)
                         }
@@ -70,7 +77,7 @@ struct MealStatsView: View {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(.white)
                     )
-
+                    
                     
                     AnalysisView(text: "이번 주 탄수화물 섭취량이 목표보다 약간 높습니다. 저녁 식사에서 탄수화물 섭취를 줄이고 단백질 섭취를 늘리는 것이 좋습니다.")
                 }
