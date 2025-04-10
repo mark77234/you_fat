@@ -9,6 +9,7 @@
 - 지원버전: `iOS 18.0`
 
 ##  폴더 구조
+```cmd
 RudyMark/
 ├── Models/            # View에서 사용하는 데이터 모델 정의
 │   └── (예: Food, Diabetes, Users 등등 . . .)
@@ -27,6 +28,7 @@ RudyMark/
 │       └── foodData.csv
 ├── Services/          # API 통신 및 공통 기능 처리
 │   └── CSVImporter.swift (+ API/ )
+```
 
 ## 네이밍 컨벤션
 ### 클래스, 구조체, ENUM(열거형), 프로토콜
