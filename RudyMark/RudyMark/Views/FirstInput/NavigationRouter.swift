@@ -22,6 +22,14 @@ class Router: ObservableObject {
     func popToRoot() {
         path = NavigationPath()
     }
+    
+    func setStack(_ screens: [Screen]) {
+        var newPath = NavigationPath()
+        for screen in screens {
+            newPath.append(screen)
+        }
+        path = newPath
+    }
 }
 
 // 2️⃣ 화면 식별을 위한 Enum
