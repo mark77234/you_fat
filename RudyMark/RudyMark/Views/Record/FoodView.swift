@@ -1,56 +1,20 @@
-//
-//  CSVTestView.swift
-//  RudyMark
-//
-//  Created by 이병찬 on 4/7/25.
-//
-
-// FoodView.swift
-// 음식 데이터를 검색하고 결과를 표시하는 SwiftData 기반 뷰
-
 import SwiftUI
 import SwiftData
 
 struct FoodView: View {
     @Environment(\.modelContext) private var context
     @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject var selectedFoodsViewModel: SelectedFoodsViewModel
+
     @State private var foods: [Food] = []
     @State private var searchQuery: String = ""
-    @State private var selectedFoods: [Food] = []
     @State private var foodToConfirm: Food?
-    
+
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                // 검색 바
-                HStack(spacing: 12) {
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.secondary)
-                        
-                        TextField("음식 이름 검색", text: $searchQuery)
-                            .submitLabel(.search)
-                            .onSubmit { fetchFoods() }
-                    }
-                    .padding(12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color(.systemBackground))
-                            .shadow(color: .black.opacity(0.05), radius: 2, y: 1)
-                    )
-                    
-                    if !searchQuery.isEmpty {
-                        Button("취소") {
-                            searchQuery = ""
-                            foods = []
-                        }
-                        .transition(.opacity)
-                    }
-                }
-                .padding()
-                .animation(.easeInOut, value: searchQuery)
-                
-                // 검색 결과 영역
+                searchBar
+
                 Group {
                     if searchQuery.isEmpty {
                         emptyStateView
@@ -60,11 +24,9 @@ struct FoodView: View {
                         foodListView
                     }
                 }
-                .transition(.opacity)
-                
-                // 선택한 음식 목록
-                if !selectedFoods.isEmpty {
-                    selectedFoodsView
+
+                if !selectedFoodsViewModel.selectedFoods.isEmpty {
+                    selectedFoodsScrollView
                 }
             }
             .navigationTitle("오늘의 식사")
@@ -74,10 +36,10 @@ struct FoodView: View {
             get: { foodToConfirm != nil },
             set: { if !$0 { foodToConfirm = nil } }
         )) {
-            Button("추가", role: .none) {
+            Button("추가") {
                 if let food = foodToConfirm {
-                    selectedFoods.append(food)
-                    homeViewModel.addFood(food) // HomeViewModel에 음식 정보 전달
+                    selectedFoodsViewModel.add(food)
+                    homeViewModel.addFood(food)
                 }
                 foodToConfirm = nil
             }
@@ -90,28 +52,51 @@ struct FoodView: View {
             }
         }
     }
-    
-    // 빈 상태 뷰
+
+    private var searchBar: some View {
+        HStack(spacing: 12) {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.secondary)
+
+                TextField("음식 이름 검색", text: $searchQuery)
+                    .submitLabel(.search)
+                    .onSubmit { fetchFoods() }
+            }
+            .padding(12)
+            .background(RoundedRectangle(cornerRadius: 12).fill(Color(.systemBackground)).shadow(color: .black.opacity(0.05), radius: 2, y: 1))
+
+            if !searchQuery.isEmpty {
+                Button("취소") {
+                    searchQuery = ""
+                    foods = []
+                }
+                .transition(.opacity)
+            }
+        }
+        .padding()
+        .animation(.easeInOut, value: searchQuery)
+    }
+
     private var emptyStateView: some View {
         VStack(spacing: 16) {
             Image(systemName: "fork.knife.circle")
                 .font(.system(size: 60))
                 .foregroundColor(.purple.opacity(0.3))
-            
+
             Text("먹은 음식을 검색해보세요")
                 .font(.headline)
                 .foregroundColor(.secondary)
         }
         .frame(maxHeight: .infinity)
     }
-    
-    // 검색 결과 없음 뷰
+
     private var noResultsView: some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.magnifyingglass")
                 .font(.system(size: 60))
                 .foregroundColor(.orange.opacity(0.3))
-            
+
             Text("'\(searchQuery)'에 대한\n검색 결과가 없습니다")
                 .font(.headline)
                 .foregroundColor(.secondary)
@@ -119,8 +104,7 @@ struct FoodView: View {
         }
         .frame(maxHeight: .infinity)
     }
-    
-    // 음식 목록 뷰
+
     private var foodListView: some View {
         ScrollView {
             LazyVStack(spacing: 12) {
@@ -134,46 +118,56 @@ struct FoodView: View {
             .padding(.vertical)
         }
     }
-    
-    // 선택한 음식 목록 뷰
-    private var selectedFoodsView: some View {
+
+    private var selectedFoodsScrollView: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Divider()
-                .padding(.horizontal)
-            Text("선택한 음식")
-                .font(.headline)
-                .padding(.horizontal)
-            
-            ForEach(selectedFoods) { food in
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(food.name)
-                            .font(.subheadline)
-                        Text("\(food.kcal, specifier: "%.0f")kcal | 탄수 \(food.carbs, specifier: "%.1f")g 단백 \(food.protein, specifier: "%.1f")g 지방 \(food.fat, specifier: "%.1f")g")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Button(action: {
-                        if let index = selectedFoods.firstIndex(where: { $0.id == food.id }) {
-                            selectedFoods.remove(at: index)
+            Divider().padding(.horizontal)
+            HStack {
+                Text("선택한 음식")
+                    .font(.headline)
+                Spacer()
+                Text("\(selectedFoodsViewModel.selectedFoods.count)개")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.horizontal)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(selectedFoodsViewModel.selectedFoods) { food in
+                        HStack(spacing: 8) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(food.name)
+                                    .font(.subheadline)
+                                    .foregroundColor(.primary)
+                                Text("\(food.kcal, specifier: "%.0f")kcal")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                            }
+
+                            Button(action: {
+                                selectedFoodsViewModel.remove(food)
+                            }) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.gray)
+                            }
                         }
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.secondary)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 12)
+                        .background(Color.purple.opacity(0.1))
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.05), radius: 2, y: 1)
                     }
                 }
                 .padding(.horizontal)
-                .padding(.vertical, 4)
             }
+            .padding(.bottom)
         }
-        .padding(.top)
     }
-    
-    // 음식 데이터 검색
+
     private func fetchFoods() {
         guard !searchQuery.isEmpty else { return }
-        
+
         do {
             let descriptor = FetchDescriptor<Food>(
                 predicate: #Predicate { $0.name.localizedStandardContains(searchQuery) }
@@ -185,6 +179,7 @@ struct FoodView: View {
         }
     }
 }
+
 
 // 음식 카드 뷰
 struct FoodCard: View {
@@ -282,7 +277,17 @@ struct NutritionBadge: View {
     }
 }
 
-#Preview {
-    FoodView()
-        .environmentObject(HomeViewModel())
-}
+//class SelectedFoodsViewModel: ObservableObject {
+//    @Published var selectedFoods: [Food] = []
+//    
+//    func add(_ food: Food) {
+//        if !selectedFoods.contains(where: { $0.id == food.id }) {
+//            selectedFoods.append(food)
+//        }
+//    }
+//    
+//    func remove(_ food: Food) {
+//        selectedFoods.removeAll { $0.id == food.id }
+//    }
+//}
+
