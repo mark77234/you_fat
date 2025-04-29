@@ -6,11 +6,27 @@
 //
 
 import SwiftUI
+import Combine
 
-class HomeViewModel : ObservableObject {
+class HomeViewModel: ObservableObject {
+    // 카드 데이터 배열
     @Published var cards: [CardData] = []
     
-    init(){
+    // 총 영양소 값 추적
+    @Published var totalKcal: Double = 0
+    @Published var totalCarbs: Double = 0
+    @Published var totalProtein: Double = 0
+    @Published var totalFat: Double = 0
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        setupInitialCards()
+        setupNutritionBindings()
+    }
+    
+    // 초기 카드 설정
+    private func setupInitialCards() {
         self.cards = [
             CardData(
                 title:"안녕하세요 !",
@@ -27,14 +43,14 @@ class HomeViewModel : ObservableObject {
                 mainTextColor: Color.black,
                 subTextColor: Color.black,
                 height: 150,
-                progress: 1600, // 현재 식사한 칼로리
+                progress: 0, // 초기값 0
                 max: 2000,
                 cardCount: 3,
                 miniCards: [
-                    MiniCard(title: "탄수화물", progress: 250, max: 300,barColor: Color.blue),
-                    MiniCard(title: "단백질", progress: 80, max: 100,barColor: Color.red),
-                    MiniCard(title: "지방", progress: 50, max: 70,barColor: Color.green)
-                            ],
+                    MiniCard(title: "탄수화물", progress: 0, max: 300, barColor: Color.blue),
+                    MiniCard(title: "단백질", progress: 0, max: 100, barColor: Color.red),
+                    MiniCard(title: "지방", progress: 0, max: 70, barColor: Color.green)
+                ],
                 miniCardsColor: .skyblue,
                 miniCardsSize: 100
             ),
@@ -60,5 +76,39 @@ class HomeViewModel : ObservableObject {
                 height: 110
             )
         ]
+    }
+    
+    // 영양소 값 변경 관찰 설정
+    private func setupNutritionBindings() {
+        Publishers.CombineLatest4($totalKcal, $totalCarbs, $totalProtein, $totalFat)
+            .sink { [weak self] _ in
+                self?.updateNutritionCards()
+            }
+            .store(in: &cancellables)
+    }
+    
+    // 영양소 카드 업데이트
+    private func updateNutritionCards() {
+        guard cards.indices.contains(1) else { return }
+
+        var updatedCard = cards[1]
+        updatedCard.progress = Float(totalKcal)
+
+        if var miniCards = updatedCard.miniCards, miniCards.count >= 3 {
+            miniCards[0].progress = Float(totalCarbs)
+            miniCards[1].progress = Float(totalProtein)
+            miniCards[2].progress = Float(totalFat)
+            updatedCard.miniCards = miniCards
+        }
+
+        cards[1] = updatedCard
+    }
+    
+    // 음식 추가 시 호출되는 메서드
+    func addFood(_ food: Food) {
+        totalKcal += food.kcal
+        totalCarbs += food.carbs
+        totalProtein += food.protein
+        totalFat += food.fat
     }
 }

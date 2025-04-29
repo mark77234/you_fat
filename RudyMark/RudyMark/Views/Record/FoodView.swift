@@ -13,16 +13,16 @@ import SwiftData
 
 struct FoodView: View {
     @Environment(\.modelContext) private var context
+    @EnvironmentObject var homeViewModel: HomeViewModel
     @State private var foods: [Food] = []
     @State private var searchQuery: String = ""
     @State private var selectedFoods: [Food] = []
     @State private var foodToConfirm: Food?
     
     var body: some View {
-        // 메인 네비게이션 뷰
         NavigationView {
             VStack(spacing: 0) {
-                // 검색 바 UI
+                // 검색 바
                 HStack(spacing: 12) {
                     HStack {
                         Image(systemName: "magnifyingglass")
@@ -50,71 +50,21 @@ struct FoodView: View {
                 .padding()
                 .animation(.easeInOut, value: searchQuery)
                 
-                // 검색어 상태에 따른 결과 영역
+                // 검색 결과 영역
                 Group {
                     if searchQuery.isEmpty {
-                        VStack(spacing: 16) {
-                            Image(systemName: "fork.knife.circle")
-                                .font(.system(size: 60))
-                                .foregroundColor(.purple.opacity(0.3))
-                            
-                            Text("먹은 음식을 검색해보세요")
-                                .font(.headline)
-                                .foregroundColor(.secondary)
-                        }
-                        .frame(maxHeight: .infinity)
+                        emptyStateView
                     } else if foods.isEmpty {
-                        VStack(spacing: 16) {
-                            Image(systemName: "exclamationmark.magnifyingglass")
-                                .font(.system(size: 60))
-                                .foregroundColor(.orange.opacity(0.3))
-                            
-                            Text("'\(searchQuery)'에 대한\n검색 결과가 없습니다")
-                                .font(.headline)
-                                .foregroundColor(.secondary)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(maxHeight: .infinity)
+                        noResultsView
                     } else {
-                        ScrollView {
-                            LazyVStack(spacing: 12) {
-                                ForEach(foods) { food in
-                                    FoodCard(food: food) {
-                                        foodToConfirm = food
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                            .padding(.vertical)
-                        }
+                        foodListView
                     }
                 }
                 .transition(.opacity)
                 
+                // 선택한 음식 목록
                 if !selectedFoods.isEmpty {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Divider()
-                            .padding(.horizontal)
-                        Text("선택한 음식")
-                            .font(.headline)
-                            .padding(.horizontal)
-                        
-                        ForEach(selectedFoods) { food in
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text(food.name)
-                                        .font(.subheadline)
-                                    Text("\(food.kcal, specifier: "%.0f")kcal | 탄수 \(food.carbs, specifier: "%.1f")g 단백 \(food.protein, specifier: "%.1f")g 지방 \(food.fat, specifier: "%.1f")g")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                                Spacer()
-                            }
-                            .padding(.horizontal)
-                            .padding(.vertical, 4)
-                        }
-                    }
-                    .padding(.top)
+                    selectedFoodsView
                 }
             }
             .navigationTitle("오늘의 식사")
@@ -127,6 +77,7 @@ struct FoodView: View {
             Button("추가", role: .none) {
                 if let food = foodToConfirm {
                     selectedFoods.append(food)
+                    homeViewModel.addFood(food) // HomeViewModel에 음식 정보 전달
                 }
                 foodToConfirm = nil
             }
@@ -140,7 +91,86 @@ struct FoodView: View {
         }
     }
     
-    // SwiftData를 통해 음식 데이터를 검색하는 함수
+    // 빈 상태 뷰
+    private var emptyStateView: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "fork.knife.circle")
+                .font(.system(size: 60))
+                .foregroundColor(.purple.opacity(0.3))
+            
+            Text("먹은 음식을 검색해보세요")
+                .font(.headline)
+                .foregroundColor(.secondary)
+        }
+        .frame(maxHeight: .infinity)
+    }
+    
+    // 검색 결과 없음 뷰
+    private var noResultsView: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "exclamationmark.magnifyingglass")
+                .font(.system(size: 60))
+                .foregroundColor(.orange.opacity(0.3))
+            
+            Text("'\(searchQuery)'에 대한\n검색 결과가 없습니다")
+                .font(.headline)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxHeight: .infinity)
+    }
+    
+    // 음식 목록 뷰
+    private var foodListView: some View {
+        ScrollView {
+            LazyVStack(spacing: 12) {
+                ForEach(foods) { food in
+                    FoodCard(food: food) {
+                        foodToConfirm = food
+                    }
+                    .padding(.horizontal)
+                }
+            }
+            .padding(.vertical)
+        }
+    }
+    
+    // 선택한 음식 목록 뷰
+    private var selectedFoodsView: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Divider()
+                .padding(.horizontal)
+            Text("선택한 음식")
+                .font(.headline)
+                .padding(.horizontal)
+            
+            ForEach(selectedFoods) { food in
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(food.name)
+                            .font(.subheadline)
+                        Text("\(food.kcal, specifier: "%.0f")kcal | 탄수 \(food.carbs, specifier: "%.1f")g 단백 \(food.protein, specifier: "%.1f")g 지방 \(food.fat, specifier: "%.1f")g")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    Spacer()
+                    Button(action: {
+                        if let index = selectedFoods.firstIndex(where: { $0.id == food.id }) {
+                            selectedFoods.remove(at: index)
+                        }
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 4)
+            }
+        }
+        .padding(.top)
+    }
+    
+    // 음식 데이터 검색
     private func fetchFoods() {
         guard !searchQuery.isEmpty else { return }
         
@@ -156,10 +186,11 @@ struct FoodView: View {
     }
 }
 
+// 음식 카드 뷰
 struct FoodCard: View {
     let food: Food
     let onTap: () -> Void
-    // 당 수치에 따른 색상 표시
+    
     private var sugarLevel: Color {
         switch food.sugar {
         case ..<5: return .green
@@ -172,7 +203,7 @@ struct FoodCard: View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack(alignment: .top) {
-                    // Sugar indicator with dynamic color
+                    // 당 수치 표시기
                     VStack(spacing: 4) {
                         Text("당")
                             .font(.caption2)
@@ -189,6 +220,7 @@ struct FoodCard: View {
                             .fill(sugarLevel.gradient)
                     )
                     
+                    // 음식 기본 정보
                     VStack(alignment: .leading, spacing: 4) {
                         Text(food.name)
                             .font(.headline)
@@ -202,7 +234,7 @@ struct FoodCard: View {
                     Spacer()
                 }
                 
-                // Nutrition grid
+                // 영양소 그리드
                 HStack {
                     NutritionBadge(value: food.carbs, unit: "g", label: "탄수", color: .purple)
                     NutritionBadge(value: food.protein, unit: "g", label: "단백", color: .blue)
@@ -219,7 +251,7 @@ struct FoodCard: View {
     }
 }
 
-// 영양 정보 배지 (탄수, 단백, 지방)
+// 영양소 배지 뷰
 struct NutritionBadge: View {
     let value: Double
     let unit: String
@@ -249,6 +281,8 @@ struct NutritionBadge: View {
         )
     }
 }
+
 #Preview {
     FoodView()
+        .environmentObject(HomeViewModel())
 }

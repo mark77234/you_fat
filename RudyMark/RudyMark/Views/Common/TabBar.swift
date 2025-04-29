@@ -15,6 +15,7 @@ struct TabBar: View {
                 .tabItem {
                     Label("홈", systemImage: "house.fill")
                 }
+                
             
             RecordView()
                 .tabItem {
