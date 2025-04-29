@@ -101,7 +101,9 @@ class HomeViewModel: ObservableObject {
             updatedCard.miniCards = miniCards
         }
 
-        cards[1] = updatedCard
+        var newCards = cards
+        newCards[1] = updatedCard
+        cards = newCards
     }
     
     // 음식 추가 시 호출되는 메서드
@@ -110,5 +112,15 @@ class HomeViewModel: ObservableObject {
         totalCarbs += food.carbs
         totalProtein += food.protein
         totalFat += food.fat
+        updateNutritionCards()
+    }
+
+    // 음식 삭제 시 호출되는 메서드
+    func removeFood(_ food: Food) {
+        totalKcal -= food.kcal
+        totalCarbs -= food.carbs
+        totalProtein -= food.protein
+        totalFat -= food.fat
+        updateNutritionCards()
     }
 }
