@@ -9,8 +9,8 @@ import Foundation
 import Observation
 
 @Observable
-class BodyInformViewModel {
-    var name: String = ""
+class BodyInformViewModel:ObservableObject {
+    var name: String? = nil
     var birth: Date = Date()
     var height: String = ""
     var weight: String = ""
@@ -20,7 +20,8 @@ class BodyInformViewModel {
     var savedInform: BodyInform?
     
     func save() -> BodyInform? {
-        guard let heightInt = Int(height),
+        guard let name = name,
+              let heightInt = Int(height),
               let weightInt = Int(weight),
               let interval = Double(medicationIntervalFromMeal) else { return nil }
         
@@ -39,7 +40,7 @@ class BodyInformViewModel {
     // Delete
     func delete() {
         savedInform = nil
-        name = ""
+        name = nil
         birth = Date()
         height = ""
         weight = ""
@@ -57,7 +58,7 @@ struct BodyInformSummaryView: View {
     var body: some View {
         Form {
             Section(header: Text("기본 정보")) {
-                Text("이름: \(info.name)")
+                
                 Text("생년월일: \(formattedDate(info.birth))")
                 Text("성별: \(info.isMale ? "남성" : "여성")")
                 Text("키: \(info.height) cm")
@@ -83,7 +84,7 @@ struct BodyInformSummaryView: View {
 import SwiftUI
 
 struct BodyInformView: View {
-    @State private var viewModel = BodyInformViewModel()
+    @ObservedObject var viewModel: BodyInformViewModel
     @State private var savedInform: BodyInform? = nil
     @State private var navigateToSummary = false
     
@@ -92,7 +93,10 @@ struct BodyInformView: View {
             
             Form {
                 Section(header: Text("기본 정보")) {
-                    TextField("이름", text: $viewModel.name)
+                    TextField("이름", text: Binding(
+                        get: { viewModel.name ?? "" },
+                        set: { viewModel.name = $0 }
+                    ))
                     DatePicker("생년월일", selection: $viewModel.birth, displayedComponents: .date)
                     TextField("키 (cm)", text: $viewModel.height)
                         .keyboardType(.numberPad)
@@ -131,5 +135,5 @@ struct BodyInformView: View {
     }
 }
 #Preview{
-    BodyInformView()
+    BodyInformView(viewModel: BodyInformViewModel())
 }

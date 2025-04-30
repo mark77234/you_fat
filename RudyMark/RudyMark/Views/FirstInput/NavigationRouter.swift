@@ -39,5 +39,8 @@ enum Screen: Hashable {
     case InputGender
     case InputPillTime
     case Home
+    case InputName
+    case InputBirth
+    case InputDiabetesType
 }
 
