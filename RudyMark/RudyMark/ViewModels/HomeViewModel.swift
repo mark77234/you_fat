@@ -123,4 +123,30 @@ class HomeViewModel: ObservableObject {
         totalFat -= food.fat
         updateNutritionCards()
     }
+    // 혈당 측정값 배열
+    @Published var bloodSugarMeasurements: [Double] = []
+
+    // 혈당 측정값 추가 및 카드 업데이트
+    func addBloodSugarMeasurement(_ value: Double) {
+        bloodSugarMeasurements.append(value)
+        updateBloodSugarCard()
+    }
+
+    // 혈당 카드 업데이트
+    private func updateBloodSugarCard() {
+        guard cards.indices.contains(2) else { return }
+
+        let count = bloodSugarMeasurements.count
+        let average = count > 0 ? bloodSugarMeasurements.reduce(0, +) / Double(count) : 0
+
+        var updatedCard = cards[2]
+        updatedCard.miniCards = [
+            MiniCard(title: "평균혈당", value: String(format: "%.0f mg/dL", average)),
+            MiniCard(title: "측정횟수", value: "\(count)회")
+        ]
+
+        var newCards = cards
+        newCards[2] = updatedCard
+        cards = newCards
+    }
 }
