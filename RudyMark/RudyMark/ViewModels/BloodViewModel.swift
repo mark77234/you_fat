@@ -21,7 +21,13 @@ class BloodViewModel: ObservableObject {
         }
     }
 
-    func saveMeasurement() {
+    func saveMeasurement(homeViewModel: HomeViewModel) {
+        if let bloodSugarValue = Double(data.bloodSugar) {
+            homeViewModel.addBloodSugarMeasurement(bloodSugarValue)
+        } else {
+            print("⚠️ 유효하지 않은 혈당 입력값입니다: \(data.bloodSugar)")
+        }
+
         print("혈당: \(data.bloodSugar), 식사: \(data.selectedMealState ?? "선택 안됨"), 물 섭취량: \(data.waterIntake)ml, 메모: \(data.memo)")
     }
 }
