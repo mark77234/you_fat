@@ -10,15 +10,17 @@ import SwiftUI
 struct BloodView: View {
     @StateObject private var viewModel = BloodViewModel()
     @EnvironmentObject var homeViewModel: HomeViewModel
+    @Environment(\.presentationMode) var presentationMode
     
 
     var body: some View {
-        ZStack {
-            Color(.systemGroupedBackground)
-                .ignoresSafeArea()
+        NavigationView {
+            ZStack {
+                Color(.systemGroupedBackground)
+                    .ignoresSafeArea()
 
-            ScrollView {
-                VStack(spacing: 20) {
+                ScrollView {
+                    VStack(spacing: 20) {
                     // 혈당 수치 입력 카드
                     BloodCardView {
                         VStack(alignment: .leading, spacing: 10) {
@@ -101,26 +103,35 @@ struct BloodView: View {
                         }
                     }
 
-                    Button(action: {
-                        viewModel.saveMeasurement(homeViewModel: homeViewModel)
-                    }) {
-                        HStack {
-                            Image(systemName: "plus")
-                            Text("측정 기록하기")
+                        Button(action: {
+                            viewModel.saveMeasurement(homeViewModel: homeViewModel)
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            HStack {
+                                Image(systemName: "plus")
+                                Text("측정 기록하기")
+                            }
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.red)
+                            .cornerRadius(12)
+                            .padding(.horizontal, 30)
                         }
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.red)
-                        .cornerRadius(12)
-                        .padding(.horizontal, 30)
+
+                        NavigationLink(destination: BloodRecordView().environmentObject(homeViewModel)) {
+                            Text("기록 확인 및 삭제")
+                                .foregroundColor(.blue)
+                                .font(.subheadline)
+                                .padding(.top, 10)
+                        }
                     }
+                    .padding(.vertical, 50)
                 }
-                .padding(.vertical, 50)
-            }
-            .onTapGesture {
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                .onTapGesture {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }
             }
         }
     }
@@ -148,5 +159,29 @@ struct BloodCardView<Content: View>: View {
 struct BloodView_Previews: PreviewProvider {
     static var previews: some View {
         BloodView()
+            .environmentObject(HomeViewModel())
+    }
+}
+
+struct BloodRecordView: View {
+    @EnvironmentObject var homeViewModel: HomeViewModel
+
+    var body: some View {
+        List {
+            ForEach(Array(homeViewModel.bloodSugarMeasurements.enumerated()), id: \.offset) { index, value in
+                HStack {
+                    Text("혈당 \(index + 1)")
+                    Spacer()
+                    Text("\(Int(value)) mg/dL")
+                }
+            }
+            .onDelete { indexSet in
+                homeViewModel.removeBloodSugarMeasurement(at: indexSet)
+            }
+        }
+        .navigationTitle("혈당 기록")
+        .toolbar {
+            EditButton()
+        }
     }
 }

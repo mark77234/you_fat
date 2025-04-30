@@ -61,8 +61,8 @@ class HomeViewModel: ObservableObject {
                 subTextColor: Color.black,
                 height: 110,
                 miniCards:[
-                    MiniCard(title:"평균혈당",value:"126 mg/dL"),
-                    MiniCard(title:"측정횟수",value:"3회")
+                    MiniCard(title:"평균혈당",value:"측정 전"),
+                    MiniCard(title:"측정횟수",value:"0회")
                 ],
                 miniCardsColor: .lightRed,
                 miniCardsSize: 80
@@ -129,6 +129,11 @@ class HomeViewModel: ObservableObject {
     // 혈당 측정값 추가 및 카드 업데이트
     func addBloodSugarMeasurement(_ value: Double) {
         bloodSugarMeasurements.append(value)
+        updateBloodSugarCard()
+    }
+
+    func removeBloodSugarMeasurement(at offsets: IndexSet) {
+        bloodSugarMeasurements.remove(atOffsets: offsets)
         updateBloodSugarCard()
     }
 
