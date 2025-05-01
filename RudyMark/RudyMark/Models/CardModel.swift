@@ -24,13 +24,18 @@ struct CustomButton{
 }
 
 struct CardData {
-    let title: String
+    var main_title: String?
+    var title: String?
     var description: String?
+    var blood_count: Int?
     let backgroundColor: Color
     let mainTextColor: Color
     let subTextColor: Color
     let height: CGFloat
+    var stat: String?
     var progress: Float?
+    var blood_progress: Float?
+    var blood_progress_color: Color?
     var max: Float?
     var cardCount: Int?
     var miniCards: [MiniCard]?
