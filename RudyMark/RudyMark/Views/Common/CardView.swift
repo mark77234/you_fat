@@ -62,12 +62,13 @@ struct CardView: View{
                                 .foregroundColor(Color.gray)
                         }
                         .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.bottom, 100)
+                        .padding(.bottom, 60)
                         
                     }
-                    .padding(10)
+                    .padding(20)
                 }
                 .frame(height: 100)
+                .padding(.bottom, 20)
             }
             
             if let miniCards = card.miniCards {
@@ -199,7 +200,7 @@ struct ArcShape: Shape {
                     startAngle: startAngle,
                     endAngle: endAngle,
                     clockwise: false)
-        path = path.strokedPath(StrokeStyle(lineWidth: 6, lineCap: .round))
+        path = path.strokedPath(StrokeStyle(lineWidth: 10, lineCap: .round))
         return path
     }
 
