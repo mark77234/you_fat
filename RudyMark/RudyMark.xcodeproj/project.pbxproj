@@ -29,9 +29,22 @@
 		6103949D2D917C890024A257 /* RudyMarkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RudyMarkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		617AFFD72DC390AD00FEC904 /* Exceptions for "RudyMark" folder in "RudyMark" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 610394822D917C880024A257 /* RudyMark */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		610394852D917C880024A257 /* RudyMark */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				617AFFD72DC390AD00FEC904 /* Exceptions for "RudyMark" folder in "RudyMark" target */,
+			);
 			path = RudyMark;
 			sourceTree = "<group>";
 		};
@@ -399,7 +412,9 @@
 				DEVELOPMENT_TEAM = DW493U4J68;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RudyMark/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "단디";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -430,7 +445,9 @@
 				DEVELOPMENT_TEAM = DW493U4J68;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RudyMark/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "단디";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

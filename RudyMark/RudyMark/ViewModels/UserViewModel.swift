@@ -9,7 +9,6 @@ import Foundation
 
 @MainActor
 class UserViewModel: ObservableObject {
-    // 여기서 @Published로 변수 다 만들고 얘를 가져다 쓰도록 하여 MVVM에 가깝게 구현
     @Published var name: String = ""
     @Published var weight: String = ""
     @Published var height: String = ""
@@ -20,10 +19,11 @@ class UserViewModel: ObservableObject {
     @Published var glucoseCheckTime: [GlucoseCheckTime] = []
 
     private let userDefaultsKey = "savedUser"
-    
-    // 변수 생성
-    var user: User? {
-        guard let w = Double(weight), let h = Double(height) else { return nil }
+
+    // MARK: - 전체 유저 모델 생성
+    private func getUpdatedUser() -> User? {
+        let w = Double(weight) ?? 0
+        let h = Double(height) ?? 0
         return User(
             name: name,
             weight: w,
@@ -36,18 +36,61 @@ class UserViewModel: ObservableObject {
         )
     }
 
+    // MARK: - 저장
+    func save() {
+        guard let user = getUpdatedUser(),
+              let encoded = try? JSONEncoder().encode(user) else {
+            print("❌ 저장 실패")
+            return
+        }
+        UserDefaults.standard.set(encoded, forKey: userDefaultsKey)
+    }
+
+    func saveName(_ newName: String) {
+        name = newName
+        save()
+    }
+
+    func saveWeight(_ newWeight: String) {
+        weight = newWeight
+        save()
+    }
+
+    func saveHeight(_ newHeight: String) {
+        height = newHeight
+        save()
+    }
+
+    func saveGender(_ isMale: Bool) {
+        self.isMale = isMale
+        save()
+    }
+
+    func saveBirth(_ birth: Date) {
+        self.birth = birth
+        save()
+    }
+
+    func saveDiabetesType(_ type: DiabetesType) {
+        self.diabetesType = type
+        save()
+    }
+
+    func saveMedicationTiming(_ timing: MedicationTiming) {
+        self.medicationTiming = timing
+        save()
+    }
+
+    func saveGlucoseCheckTime(_ times: [GlucoseCheckTime]) {
+        self.glucoseCheckTime = times
+        save()
+    }
+
+    // MARK: - 로드
     init() {
         loadUser()
     }
 
-    // 저장 및 수정(둘 다 같은 맥락이기 때문에 분리할 필요 없음)
-    func save() {
-        guard let user = user,
-              let encoded = try? JSONEncoder().encode(user) else { return }
-        UserDefaults.standard.set(encoded, forKey: userDefaultsKey)
-    }
-
-    // 저장된 정보 로드
     func loadUser() {
         guard let data = UserDefaults.standard.data(forKey: userDefaultsKey),
               let savedUser = try? JSONDecoder().decode(User.self, from: data) else { return }
@@ -62,7 +105,7 @@ class UserViewModel: ObservableObject {
         glucoseCheckTime = savedUser.glucoseCheckTime
     }
 
-    // 초기화(필요하면 사용할 것)
+    // MARK: - 초기화
     func clear() {
         UserDefaults.standard.removeObject(forKey: userDefaultsKey)
         name = ""

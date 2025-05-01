@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 struct MealStatsView: View {
-    
+    @EnvironmentObject var userViewModel: UserViewModel
     let weeklyCalories: [(day: String, calories: Int)] = [
         ("월", 2000), ("화", 1800), ("수", 2200), ("목", 1900),
         ("금", 2100), ("토", 2300), ("일", 1950)
@@ -23,6 +23,11 @@ struct MealStatsView: View {
             
             ScrollView {
                 VStack(alignment: .center) {
+                    Text(userViewModel.name)
+                        .foregroundStyle(.black)
+                        .background{
+                            Color.blue
+                        }
                     VStack(spacing: 16) {
                         HStack {
                             Text("칼로리 섭취량")
