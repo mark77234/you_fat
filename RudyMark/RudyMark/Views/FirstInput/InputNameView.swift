@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Combine
 
 struct InputNameView: View {
-    @EnvironmentObject var viewModel: BodyInformViewModel
+    @EnvironmentObject var viewModel: UserViewModel
     @EnvironmentObject var router: Router
     
     var body: some View {
@@ -17,10 +18,7 @@ struct InputNameView: View {
                 .font(.setPretendard(weight: .extraBold, size: 25))
             
             Spacer()
-            TextField("이름을 입력해주세요", text: Binding(
-                get: { viewModel.name ?? "" },
-                set: { viewModel.name = $0 }
-            ))
+            TextField("이름을 입력해주세요", text: $viewModel.name)
                 .font(.system(size: 20))
                 .padding(.vertical, 16)
                 .frame(maxWidth: .infinity)
@@ -29,7 +27,8 @@ struct InputNameView: View {
 
             Spacer()
 
-            NextButton(isEnabled: viewModel.name != nil, action: {
+            NextButton(isEnabled: true, action: {
+                viewModel.save()
                 router.push(.InputBirth)
             }, label: {
                 Text("다음")
@@ -39,3 +38,8 @@ struct InputNameView: View {
         .padding(.all, 20)
     }
 }
+#Preview {
+    InputNameView()
+        .environmentObject(Router())
+}
+ 

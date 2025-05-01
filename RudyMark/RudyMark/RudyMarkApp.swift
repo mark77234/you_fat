@@ -12,7 +12,7 @@ import SwiftData
 struct RudyMarkApp: App {
     @StateObject private var selectedFoodsViewModel = SelectedFoodsViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
-    @StateObject var viewModel = BodyInformViewModel()
+    @StateObject private var userViewModel = UserViewModel()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([Food.self])
@@ -24,7 +24,7 @@ struct RudyMarkApp: App {
         WindowGroup {
             FirstInputView()
                 .environmentObject(homeViewModel)
-                .environmentObject(viewModel)
+                .environmentObject(userViewModel)
                 .environmentObject(selectedFoodsViewModel)
                 .modelContainer(sharedModelContainer)
                 .onAppear {

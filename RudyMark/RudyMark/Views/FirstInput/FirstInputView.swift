@@ -8,7 +8,7 @@ import SwiftUI
 
 struct FirstInputView: View {
     @StateObject var router = Router()
-    @StateObject var viewModel = BodyInformViewModel()
+    @StateObject var viewModel = UserViewModel()
     
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -27,6 +27,6 @@ struct FirstInputView: View {
                 }
         }
         .environmentObject(router) // 여기 선언해야 자식뷰에 일일이 넘겨주지 않아도 됨
-        .environment(viewModel)
+        .environmentObject(viewModel)
     }
 }

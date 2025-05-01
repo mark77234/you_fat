@@ -7,13 +7,13 @@
 import SwiftUI
 
 struct InputBirthView: View {
-    @EnvironmentObject var viewModel: BodyInformViewModel
+    @EnvironmentObject var viewModel: UserViewModel
     @EnvironmentObject var router: Router
 
     var body: some View {
         VStack {
-            Text(String(viewModel.name ?? "이름"))
-            NextButton(isEnabled: viewModel.name != nil, action: {
+            Text(String(viewModel.name))
+            NextButton(isEnabled: true, action: {
                 router.push(.InputBody)
             }, label: {
                 Text("다음")
