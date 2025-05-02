@@ -37,6 +37,14 @@ class HomeViewModel: ObservableObject {
                 height: 100
             ),
             CardData(
+                title:"오늘의 조언",
+                description: "혈당 관리를 위해 저녁 식사에는 탄수화물 섭취를 줄이고 단백질과 채소 위주로 드시는 것이 좋습니다.",
+                backgroundColor: .skyblue,
+                mainTextColor: .deepBlue,
+                subTextColor: .deepBlue,
+                height: 110
+            ),
+            CardData(
                 title:"오늘의 평균혈당",
                 blood_count:0,
                 backgroundColor: Color.white,
@@ -62,20 +70,11 @@ class HomeViewModel: ObservableObject {
                 cardCount: 3,
                 miniCards: [
                     MiniCard(title: "탄수화물", progress: 0, max: 300, barColor: Color.blue),
-                    MiniCard(title: "단백질", progress: 0, max: 100, barColor: Color.red),
-                    MiniCard(title: "지방", progress: 0, max: 70, barColor: Color.green)
+                    MiniCard(title: "단백질", progress: 0, max: 100, barColor: Color.green),
+                    MiniCard(title: "지방", progress: 0, max: 70, barColor: Color.yellow)
                 ],
-                miniCardsColor: .skyblue,
+                miniCardsColor: Color.white,
                 miniCardsSize: 100
-            ),
-            
-            CardData(
-                title:"오늘의 조언",
-                description: "혈당 관리를 위해 저녁 식사에는 탄수화물 섭취를 줄이고 단백질과 채소 위주로 드시는 것이 좋습니다.",
-                backgroundColor: .skyblue,
-                mainTextColor: .deepBlue,
-                subTextColor: .deepBlue,
-                height: 110
             )
         ]
     }
@@ -93,7 +92,7 @@ class HomeViewModel: ObservableObject {
     private func updateNutritionCards() {
         guard cards.indices.contains(1) else { return }
 
-        var updatedCard = cards[2]
+        var updatedCard = cards[3]
         updatedCard.progress = Float(totalKcal)
 
         if var miniCards = updatedCard.miniCards, miniCards.count >= 3 {
@@ -104,7 +103,7 @@ class HomeViewModel: ObservableObject {
         }
 
         var newCards = cards
-        newCards[2] = updatedCard
+        newCards[3] = updatedCard
         cards = newCards
     }
     
@@ -146,7 +145,7 @@ class HomeViewModel: ObservableObject {
         let count = bloodSugarMeasurements.count
         let average = count > 0 ? bloodSugarMeasurements.reduce(0, +) / Double(count) : 0
 
-        var updatedCard = cards[1]
+        var updatedCard = cards[2]
         updatedCard.blood_progress = Float(average)
         updatedCard.max = 200
         updatedCard.blood_count = Int(count)
@@ -163,7 +162,7 @@ class HomeViewModel: ObservableObject {
         }
 
         var newCards = cards
-        newCards[1] = updatedCard
+        newCards[2] = updatedCard
         cards = newCards
     }
 }

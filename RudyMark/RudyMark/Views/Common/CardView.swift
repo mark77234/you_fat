@@ -141,29 +141,36 @@ struct MiniCardView : View{
     let cardHeight: CGFloat
     
     var body: some View{
-        VStack(alignment: .leading){
-            Text(miniCard.title)
-                .font(.subheadline)
-                .foregroundColor(.deepGray)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 10)
-                
+        VStack(alignment: .center){
             
-            if let value = miniCard.value {
-                Text("\(value)")
-                    .padding(.leading, 10)
-                    .foregroundColor(Color.black)
-            }
             
-            if let progress = miniCard.progress, let max = miniCard.max,let barColor = miniCard.barColor {
-                Text("\(Int(progress)) / \(Int(max)) g")
-                    .foregroundColor(Color.black)
-                    .padding(.leading, 10)
-                
-                ProgressView(value: progress, total: max)
-                    .progressViewStyle(LinearProgressViewStyle(tint: barColor))
+            if let progress = miniCard.progress, let max = miniCard.max, let barColor = miniCard.barColor {
+                VStack(alignment: .center) {
+                        Text(miniCard.title)
+                            .font(.subheadline)
+                            .foregroundColor(.deepGray)
+                    GeometryReader { geometry in
+                        ZStack(alignment: .bottom) {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(width: 30)
+
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(barColor)
+                                .frame(width: 30, height: geometry.size.height * CGFloat(progress / max))
+                        }
+                        .frame(maxHeight: .infinity)
+                        
+                    }
+                    .frame(width: 30, height: 60)
                     .padding(.horizontal)
-                    .scaleEffect(x: 1.0, y: 2.0)
+                    
+                    Text("\(Int(progress)) / \(Int(max)) g")
+                        .foregroundColor(Color.black)
+                        .padding(.bottom, 5)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
             }
         }
         
