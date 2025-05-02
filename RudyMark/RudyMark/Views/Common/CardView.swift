@@ -12,6 +12,9 @@ struct CardView: View{
     var body: some View{
         VStack(alignment: .leading,spacing: 20){
             HStack{
+                if card.cardIcon != nil {
+                    Image(systemName: card.cardIcon ?? "questionmark") 
+                }
                 if card.main_title != nil {
                     Text(card.main_title ?? "메인 타이틀")
                         .font(.title2)

@@ -37,12 +37,12 @@ class HomeViewModel: ObservableObject {
                 height: 100
             ),
             CardData(
-                title:"오늘의 조언",
-                description: "혈당 관리를 위해 저녁 식사에는 탄수화물 섭취를 줄이고 단백질과 채소 위주로 드시는 것이 좋습니다.",
-                backgroundColor: .skyblue,
-                mainTextColor: .deepBlue,
+                cardIcon:"envelope.fill",
+                title:"포포의 조언이 도착했어요!",
+                backgroundColor: .white,
+                mainTextColor: .black,
                 subTextColor: .deepBlue,
-                height: 110
+                height: 60
             ),
             CardData(
                 title:"오늘의 평균혈당",

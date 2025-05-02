@@ -20,17 +20,17 @@ struct CustomButton{
     let buttonColor: Color?
     var icon: String?
     var destination: AnyView?
-    
 }
 
 struct CardData {
+    var cardIcon: String?
     var main_title: String?
     var title: String?
     var description: String?
     var blood_count: Int?
     let backgroundColor: Color
     let mainTextColor: Color
-    let subTextColor: Color
+    var subTextColor: Color?
     let height: CGFloat
     var stat: String?
     var progress: Float?
