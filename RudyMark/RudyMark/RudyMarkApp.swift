@@ -12,7 +12,7 @@ import SwiftData
 struct RudyMarkApp: App {
     @StateObject private var selectedFoodsViewModel = SelectedFoodsViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
-    
+    @StateObject private var userViewModel = UserViewModel()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([Food.self])
@@ -24,6 +24,7 @@ struct RudyMarkApp: App {
         WindowGroup {
             FirstInputView()
                 .environmentObject(homeViewModel)
+                .environmentObject(userViewModel)
                 .environmentObject(selectedFoodsViewModel)
                 .modelContainer(sharedModelContainer)
                 .onAppear {
@@ -34,6 +35,7 @@ struct RudyMarkApp: App {
                         UserDefaults.standard.set(true, forKey: "hasImportedCSV")
                     }
                 }
+
         }
     }
 }

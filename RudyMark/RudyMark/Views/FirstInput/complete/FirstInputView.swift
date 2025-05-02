@@ -8,10 +8,11 @@ import SwiftUI
 
 struct FirstInputView: View {
     @StateObject var router = Router()
+    @StateObject var viewModel = UserViewModel()
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            InputBodyView()
+            InputNameView()
                 .navigationDestination(for: Screen.self) { screen in
                     switch screen {
                     case .InputBody: InputBodyView()
@@ -19,9 +20,13 @@ struct FirstInputView: View {
                     case .InputPillTime: InputPillTimeView()
                     case .InputBloodTime: InputBloodTimeView()
                     case .Home: TabBar()
+                    case .InputName: InputNameView()
+                    case .InputBirth: InputBirthView()
+                    case .InputDiabetesType: InputDiabetesTypeView()
                     }
                 }
         }
         .environmentObject(router) // 여기 선언해야 자식뷰에 일일이 넘겨주지 않아도 됨
+        .environmentObject(viewModel)
     }
 }

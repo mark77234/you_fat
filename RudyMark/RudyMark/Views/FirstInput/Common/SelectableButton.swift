@@ -7,18 +7,22 @@
 import SwiftUI
 
 struct SelectableButton: View {
-    let text: String
+    let imageName: String
+    
     let isSelected: Bool
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
-            Text(text)
-                .frame(maxWidth: .infinity, minHeight: 50)
-                .foregroundStyle(.black)
-                .background(isSelected ? .primaryGreen.opacity(0.3) : Color.white)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.gray, lineWidth: 1))
+            VStack(spacing: 8) {
+                Image(imageName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 140, height: 128)
+            }
+            .frame(maxWidth: .infinity)
+            .background(isSelected ? Color.primaryGreen.opacity(0.3) : Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
         }
     }
 }
