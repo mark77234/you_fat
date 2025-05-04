@@ -74,7 +74,7 @@ class HomeViewModel: ObservableObject {
                     MiniCard(title: "지방", progress: 0, max: 70, barColor: Color.yellow)
                 ],
                 miniCardsColor: Color.white,
-                miniCardsSize: 100
+                miniCardsSize: 50
             )
         ]
     }

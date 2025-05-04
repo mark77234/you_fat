@@ -13,7 +13,7 @@ struct CardView: View{
         VStack(alignment: .leading,spacing: 20){
             HStack{
                 if card.cardIcon != nil {
-                    Image(systemName: card.cardIcon ?? "questionmark") 
+                    Image(systemName: card.cardIcon ?? "questionmark2")
                 }
                 if card.main_title != nil {
                     Text(card.main_title ?? "메인 타이틀")
@@ -76,14 +76,13 @@ struct CardView: View{
             
             if let miniCards = card.miniCards {
                 
-                HStack{
+                VStack{
                     ForEach(miniCards, id: \.title){ nutrient in
                         HStack{
                             MiniCardView(miniCard: nutrient,cardHeight: card.height)
                         }
                         .frame(maxWidth: .infinity,minHeight: card.miniCardsSize)
                         .background(card.miniCardsColor)
-                        .cornerRadius(12)
                     }
                 }
                 
@@ -145,38 +144,27 @@ struct MiniCardView : View{
     
     var body: some View{
         VStack(alignment: .center){
-            
-            
             if let progress = miniCard.progress, let max = miniCard.max, let barColor = miniCard.barColor {
-                VStack(alignment: .center) {
-                        Text(miniCard.title)
-                            .font(.subheadline)
-                            .foregroundColor(.deepGray)
-                    GeometryReader { geometry in
-                        ZStack(alignment: .bottom) {
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(width: 30)
-
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(barColor)
-                                .frame(width: 30, height: geometry.size.height * CGFloat(progress / max))
-                        }
-                        .frame(maxHeight: .infinity)
-                        
+                HStack(alignment: .center,spacing:10) {
+                    Text(miniCard.title)
+                        .font(.subheadline)
+                        .foregroundColor(.deepGray)
+                
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(width: 140, height: 12)
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(barColor)
+                            .frame(width: CGFloat(progress / max) * 140, height: 12)
                     }
-                    .frame(width: 30, height: 60)
-                    .padding(.horizontal)
                     
                     Text("\(Int(progress)) / \(Int(max)) g")
                         .foregroundColor(Color.black)
-                        .padding(.bottom, 5)
-                        .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
             }
         }
-        
     }
 }
 
