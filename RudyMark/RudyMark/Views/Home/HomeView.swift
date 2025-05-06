@@ -12,8 +12,6 @@ struct HomeView: View {
     
     var body: some View {
         ZStack{
-            Color.greenBackground
-                .ignoresSafeArea()
             ScrollView{
                 VStack(
                     spacing: 30
