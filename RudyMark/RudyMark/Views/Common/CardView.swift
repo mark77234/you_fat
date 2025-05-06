@@ -144,17 +144,11 @@ struct CardView: View{
             }
             if card.cardIcon != nil {
                 ZStack {
-                    Circle()
-                        .fill(.lightPurple)
-                        .frame(width: 50, height: 50)
                     Image(.messageIcon)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.gray)
+                        .frame(width: 60, height: 60)
                 }
-                .padding(.top, 5)
-                .padding(.trailing, 5)
             }
         }
         .padding()
@@ -177,14 +171,14 @@ struct MiniCardView : View{
                         .font(.subheadline)
                         .foregroundColor(.deepGray)
                 
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 140, height: 12)
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(barColor)
-                            .frame(width: CGFloat(progress / max) * 140, height: 12)
-                    }
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: 140, height: 16)
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(barColor)
+                        .frame(width: min(CGFloat(progress / max) * 140, 140), height: 16)
+                }
                     
                     (
                         Text("\(Int(progress))").bold().foregroundColor(.black)
