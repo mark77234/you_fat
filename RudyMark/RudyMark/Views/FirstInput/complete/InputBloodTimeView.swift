@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct InputBloodTimeView: View {
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding: Bool = false
     @EnvironmentObject var router: Router
     @EnvironmentObject var viewModel: UserViewModel
     
@@ -59,6 +60,7 @@ struct InputBloodTimeView: View {
                 Button(action: {
                     viewModel.saveGlucoseCheckTime(Array(selectedTimes))
                     router.setStack([.InputGender, .Home])
+                    hasSeenOnboarding = true
                 }) {
                     Text("완료")
                         .frame(maxWidth: .infinity)
