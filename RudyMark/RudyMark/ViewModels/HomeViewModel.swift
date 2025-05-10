@@ -229,3 +229,20 @@ class HomeViewModel: ObservableObject {
         cards = newCards
     }
 }
+
+extension HomeViewModel {
+    func resetDailyData() {
+        // 영양소 총합 초기화
+        totalKcal = 0
+        totalCarbs = 0
+        totalProtein = 0
+        totalFat = 0
+        
+        // 혈당 데이터 초기화
+        bloodDataList.removeAll()
+        
+        // 카드 UI 업데이트
+        updateNutritionCards()
+        updateBloodSugarCard()
+    }
+}
