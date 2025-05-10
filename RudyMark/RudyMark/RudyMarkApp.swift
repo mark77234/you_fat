@@ -16,7 +16,7 @@ struct RudyMarkApp: App {
     
     var sharedModelContainer: ModelContainer = {
         do {
-            return try ModelContainer(for: Food.self)
+            return try ModelContainer(for: Food.self, BloodData.self)
         } catch {
             fatalError("❌ ModelContainer 로딩 실패: \(error)")
         }

@@ -12,6 +12,7 @@ import SwiftData
 class HomeViewModel: ObservableObject {
     // 카드 데이터 배열
     @Published var cards: [CardData] = []
+    @Published var bloodDataList: [BloodData] = []
     
     // 총 영양소 값 추적
     @Published var totalKcal: Double = 0
@@ -27,6 +28,7 @@ class HomeViewModel: ObservableObject {
         setupInitialCards()
         setupNutritionBindings()
         loadPersistedFoods()
+        loadBloodData()
     }
     
     // 초기 카드 설정
@@ -75,6 +77,15 @@ class HomeViewModel: ObservableObject {
             )
         ]
     }
+    func loadBloodData() {
+            do {
+                let descriptor = FetchDescriptor<BloodData>()
+                bloodDataList = try modelContext.fetch(descriptor)
+                updateBloodSugarCard()
+            } catch {
+                print("혈당 데이터 로드 실패: \(error)")
+            }
+        }
     
     func loadPersistedFoods() {
             do {
@@ -159,26 +170,48 @@ class HomeViewModel: ObservableObject {
 
     // 혈당 측정값 추가 및 카드 업데이트
     func addBloodSugarMeasurement(_ value: Double) {
-        bloodSugarMeasurements.append(value)
-        updateBloodSugarCard()
-    }
+            let newData = BloodData(
+                bloodSugar: value,
+                selectedMealState: nil,
+                waterIntake: 0,
+                memo: ""
+            )
+            modelContext.insert(newData)
+            do {
+                try modelContext.save()
+                bloodDataList.append(newData) // 로컬 데이터 업데이트
+                updateBloodSugarCard()
+            } catch {
+                print("혈당 데이터 저장 실패: \(error)")
+            }
+        }
 
     func removeBloodSugarMeasurement(at offsets: IndexSet) {
-        bloodSugarMeasurements.remove(atOffsets: offsets)
-        updateBloodSugarCard()
-    }
+           offsets.forEach { index in
+               let data = bloodDataList[index]
+               modelContext.delete(data)
+           }
+           do {
+               try modelContext.save()
+               bloodDataList.remove(atOffsets: offsets) // 로컬 데이터 업데이트
+               updateBloodSugarCard()
+           } catch {
+               print("혈당 데이터 삭제 실패: \(error)")
+           }
+       }
 
     // 혈당 카드 업데이트
     private func updateBloodSugarCard() {
-        guard cards.indices.contains(2) else { return }
-
-        let count = bloodSugarMeasurements.count
-        let average = count > 0 ? bloodSugarMeasurements.reduce(0, +) / Double(count) : 0
-
+        let measurements = bloodDataList.map { $0.bloodSugar }
+        let count = measurements.count
+        let average = count > 0 ? measurements.reduce(0, +) / Double(count) : 0
+                
+        guard cards.indices.contains(1) else { return }
+        
         var updatedCard = cards[1]
         updatedCard.blood_progress = Float(average)
         updatedCard.max = 200
-        updatedCard.blood_count = Int(count)
+        updatedCard.blood_count = count
 
         if average < 100 {
             updatedCard.stat = "낮음"
