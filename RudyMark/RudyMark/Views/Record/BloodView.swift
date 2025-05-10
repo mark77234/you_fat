@@ -26,7 +26,7 @@ struct BloodView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("혈당 수치 (mg/dL)")
                                 .font(.headline)
-                            TextField("혈당 수치를 입력하세요", text: $viewModel.data.bloodSugar)
+                            TextField("혈당 수치를 입력하세요", value: $viewModel.data.bloodSugar, format: .number)
                                 .keyboardType(.numberPad)
                                 .padding()
                                 .frame(height: 50)
