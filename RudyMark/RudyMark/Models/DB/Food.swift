@@ -8,26 +8,27 @@ import SwiftUI
 import SwiftData
 
 @Model
-class Food {
+final class Food {
     var name: String
     var kcal: Double
     var carbs: Double
     var protein: Double
     var fat: Double
-    var sugar: Double // 새로 추가된 속성
+    var sugar: Double
+    var isUserAdded: Bool
 
-    init(name: String, kcal: Double, carbs: Double, protein: Double, fat: Double, sugar: Double) {
+    init(name: String, kcal: Double, carbs: Double, protein: Double, fat: Double, sugar: Double,isUserAdded: Bool = false) {
         self.name = name
         self.kcal = kcal
         self.carbs = carbs
         self.protein = protein
         self.fat = fat
         self.sugar = sugar
+        self.isUserAdded = isUserAdded
     }
 }
 
-@Model
-class MealInform {
+final class MealInform {
     var dayCalories: Int // 일일 권장 칼로리
     var currentCalories: Int // 현재 섭취한 칼로리
     var carbohydrate: Int // 탄수화물

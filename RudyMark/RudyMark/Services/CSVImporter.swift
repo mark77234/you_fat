@@ -70,6 +70,7 @@ class CSVImporter {
                 let sugar = Double(values[sugarIndex]) ?? 0
 
                 let food = Food(name: name, kcal: kcal, carbs: carbs, protein: protein, fat: fat, sugar: sugar)
+                food.isUserAdded = false
                 modelContext.insert(food)
             }
 
