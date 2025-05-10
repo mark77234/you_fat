@@ -10,8 +10,6 @@ import SwiftData
 
 @main
 struct RudyMarkApp: App {
-    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding: Bool = false
-
     @StateObject private var selectedFoodsViewModel = SelectedFoodsViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
     @StateObject private var userViewModel = UserViewModel()
@@ -24,36 +22,20 @@ struct RudyMarkApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if hasSeenOnboarding {
-                TabBar()
-                    .environmentObject(homeViewModel)
-                    .environmentObject(userViewModel)
-                    .environmentObject(selectedFoodsViewModel)
-                    .modelContainer(sharedModelContainer)
-                    .onAppear {
-                        if !UserDefaults.standard.bool(forKey: "hasImportedCSV") {
-                            let context = sharedModelContainer.mainContext
-                            let importer = CSVImporter(modelContext: context)
-                            importer.importFoodsFromCSV()
-                            UserDefaults.standard.set(true, forKey: "hasImportedCSV")
-                        }
+            FirstInputView()
+                .environmentObject(homeViewModel)
+                .environmentObject(userViewModel)
+                .environmentObject(selectedFoodsViewModel)
+                .modelContainer(sharedModelContainer)
+                .onAppear {
+                    if !UserDefaults.standard.bool(forKey: "hasImportedCSV") {
+                        let context = sharedModelContainer.mainContext
+                        let importer = CSVImporter(modelContext: context)
+                        importer.importFoodsFromCSV()
+                        UserDefaults.standard.set(true, forKey: "hasImportedCSV")
                     }
-            }
-            else {
-                FirstInputView()
-                    .environmentObject(homeViewModel)
-                    .environmentObject(userViewModel)
-                    .environmentObject(selectedFoodsViewModel)
-                    .modelContainer(sharedModelContainer)
-                    .onAppear {
-                        if !UserDefaults.standard.bool(forKey: "hasImportedCSV") {
-                            let context = sharedModelContainer.mainContext
-                            let importer = CSVImporter(modelContext: context)
-                            importer.importFoodsFromCSV()
-                            UserDefaults.standard.set(true, forKey: "hasImportedCSV")
-                        }
-                    }
-            }
+                }
+
         }
     }
 }
