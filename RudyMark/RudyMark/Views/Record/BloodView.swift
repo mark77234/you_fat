@@ -156,12 +156,6 @@ struct BloodCardView<Content: View>: View {
     }
 }
 
-struct BloodView_Previews: PreviewProvider {
-    static var previews: some View {
-        BloodView()
-            .environmentObject(HomeViewModel())
-    }
-}
 
 struct BloodRecordView: View {
     @EnvironmentObject var homeViewModel: HomeViewModel

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import SwiftData
 
 class HomeViewModel: ObservableObject {
     // 카드 데이터 배열
@@ -19,10 +20,13 @@ class HomeViewModel: ObservableObject {
     @Published var totalFat: Double = 0
     
     private var cancellables = Set<AnyCancellable>()
+    private let modelContext: ModelContext
     
-    init() {
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
         setupInitialCards()
         setupNutritionBindings()
+        loadPersistedFoods()
     }
     
     // 초기 카드 설정
@@ -72,6 +76,26 @@ class HomeViewModel: ObservableObject {
         ]
     }
     
+    func loadPersistedFoods() {
+            do {
+                let descriptor = FetchDescriptor<Food>(
+                            predicate: #Predicate { $0.isUserAdded} // 사용자 음식만
+                        )
+                let persistedFoods = try modelContext.fetch(descriptor)
+                
+                persistedFoods.forEach { food in
+                    totalKcal += food.kcal
+                    totalCarbs += food.carbs
+                    totalProtein += food.protein
+                    totalFat += food.fat
+                }
+                
+                updateNutritionCards()
+            } catch {
+                print("Failed to load persisted foods: \(error)")
+            }
+        }
+    
     // 영양소 값 변경 관찰 설정
     private func setupNutritionBindings() {
         Publishers.CombineLatest4($totalKcal, $totalCarbs, $totalProtein, $totalFat)
@@ -102,6 +126,13 @@ class HomeViewModel: ObservableObject {
     
     // 음식 추가 시 호출되는 메서드
     func addFood(_ food: Food) {
+        food.isUserAdded = true
+        modelContext.insert(food)
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error saving food: \(error)")
+            }
         totalKcal += food.kcal
         totalCarbs += food.carbs
         totalProtein += food.protein
@@ -111,6 +142,12 @@ class HomeViewModel: ObservableObject {
 
     // 음식 삭제 시 호출되는 메서드
     func removeFood(_ food: Food) {
+        modelContext.delete(food)
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error deleting food: \(error)")
+            }
         totalKcal -= food.kcal
         totalCarbs -= food.carbs
         totalProtein -= food.protein

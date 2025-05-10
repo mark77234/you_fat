@@ -11,14 +11,21 @@ import SwiftData
 @main
 struct RudyMarkApp: App {
     @StateObject private var selectedFoodsViewModel = SelectedFoodsViewModel()
-    @StateObject private var homeViewModel = HomeViewModel()
+    @StateObject private var homeViewModel: HomeViewModel
     @StateObject private var userViewModel = UserViewModel()
     
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([Food.self])
-        let config = ModelConfiguration("RudyMark", schema: schema)
-        return try! ModelContainer(for: schema, configurations: [config])
+        do {
+            return try ModelContainer(for: Food.self)
+        } catch {
+            fatalError("❌ ModelContainer 로딩 실패: \(error)")
+        }
     }()
+    
+    init() {
+            let modelContext = sharedModelContainer.mainContext
+            _homeViewModel = StateObject(wrappedValue: HomeViewModel(modelContext: modelContext))
+        }
     
     var body: some Scene {
         WindowGroup {
@@ -33,10 +40,10 @@ struct RudyMarkApp: App {
                         let importer = CSVImporter(modelContext: context)
                         importer.importFoodsFromCSV()
                         UserDefaults.standard.set(true, forKey: "hasImportedCSV")
+                        homeViewModel.loadPersistedFoods()
                     }
                 }
 
         }
     }
 }
-
