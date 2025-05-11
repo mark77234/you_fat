@@ -7,10 +7,12 @@
 
 import SwiftUI
 import Combine
+import SwiftData
 
 class HomeViewModel: ObservableObject {
     // 카드 데이터 배열
     @Published var cards: [CardData] = []
+    @Published var bloodDataList: [BloodData] = []
     
     // 총 영양소 값 추적
     @Published var totalKcal: Double = 0
@@ -19,10 +21,14 @@ class HomeViewModel: ObservableObject {
     @Published var totalFat: Double = 0
     
     private var cancellables = Set<AnyCancellable>()
+    private let modelContext: ModelContext
     
-    init() {
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
         setupInitialCards()
         setupNutritionBindings()
+        loadPersistedFoods()
+        loadBloodData()
     }
     
     // 초기 카드 설정
@@ -71,6 +77,35 @@ class HomeViewModel: ObservableObject {
             )
         ]
     }
+    func loadBloodData() {
+            do {
+                let descriptor = FetchDescriptor<BloodData>()
+                bloodDataList = try modelContext.fetch(descriptor)
+                updateBloodSugarCard()
+            } catch {
+                print("혈당 데이터 로드 실패: \(error)")
+            }
+        }
+    
+    func loadPersistedFoods() {
+            do {
+                let descriptor = FetchDescriptor<Food>(
+                            predicate: #Predicate { $0.isUserAdded} // 사용자 음식만
+                        )
+                let persistedFoods = try modelContext.fetch(descriptor)
+                
+                persistedFoods.forEach { food in
+                    totalKcal += food.kcal
+                    totalCarbs += food.carbs
+                    totalProtein += food.protein
+                    totalFat += food.fat
+                }
+                
+                updateNutritionCards()
+            } catch {
+                print("Failed to load persisted foods: \(error)")
+            }
+        }
     
     // 영양소 값 변경 관찰 설정
     private func setupNutritionBindings() {
@@ -102,6 +137,13 @@ class HomeViewModel: ObservableObject {
     
     // 음식 추가 시 호출되는 메서드
     func addFood(_ food: Food) {
+        food.isUserAdded = true
+        modelContext.insert(food)
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error saving food: \(error)")
+            }
         totalKcal += food.kcal
         totalCarbs += food.carbs
         totalProtein += food.protein
@@ -111,6 +153,12 @@ class HomeViewModel: ObservableObject {
 
     // 음식 삭제 시 호출되는 메서드
     func removeFood(_ food: Food) {
+        modelContext.delete(food)
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error deleting food: \(error)")
+            }
         totalKcal -= food.kcal
         totalCarbs -= food.carbs
         totalProtein -= food.protein
@@ -122,26 +170,48 @@ class HomeViewModel: ObservableObject {
 
     // 혈당 측정값 추가 및 카드 업데이트
     func addBloodSugarMeasurement(_ value: Double) {
-        bloodSugarMeasurements.append(value)
-        updateBloodSugarCard()
-    }
+            let newData = BloodData(
+                bloodSugar: value,
+                selectedMealState: nil,
+                waterIntake: 0,
+                memo: ""
+            )
+            modelContext.insert(newData)
+            do {
+                try modelContext.save()
+                bloodDataList.append(newData) // 로컬 데이터 업데이트
+                updateBloodSugarCard()
+            } catch {
+                print("혈당 데이터 저장 실패: \(error)")
+            }
+        }
 
     func removeBloodSugarMeasurement(at offsets: IndexSet) {
-        bloodSugarMeasurements.remove(atOffsets: offsets)
-        updateBloodSugarCard()
-    }
+           offsets.forEach { index in
+               let data = bloodDataList[index]
+               modelContext.delete(data)
+           }
+           do {
+               try modelContext.save()
+               bloodDataList.remove(atOffsets: offsets) // 로컬 데이터 업데이트
+               updateBloodSugarCard()
+           } catch {
+               print("혈당 데이터 삭제 실패: \(error)")
+           }
+       }
 
     // 혈당 카드 업데이트
     private func updateBloodSugarCard() {
-        guard cards.indices.contains(2) else { return }
-
-        let count = bloodSugarMeasurements.count
-        let average = count > 0 ? bloodSugarMeasurements.reduce(0, +) / Double(count) : 0
-
+        let measurements = bloodDataList.map { $0.bloodSugar }
+        let count = measurements.count
+        let average = count > 0 ? measurements.reduce(0, +) / Double(count) : 0
+                
+        guard cards.indices.contains(1) else { return }
+        
         var updatedCard = cards[1]
         updatedCard.blood_progress = Float(average)
         updatedCard.max = 200
-        updatedCard.blood_count = Int(count)
+        updatedCard.blood_count = count
 
         if average < 100 {
             updatedCard.stat = "낮음"
@@ -157,5 +227,22 @@ class HomeViewModel: ObservableObject {
         var newCards = cards
         newCards[1] = updatedCard
         cards = newCards
+    }
+}
+
+extension HomeViewModel {
+    func resetDailyData() {
+        // 영양소 총합 초기화
+        totalKcal = 0
+        totalCarbs = 0
+        totalProtein = 0
+        totalFat = 0
+        
+        // 혈당 데이터 초기화
+        bloodDataList.removeAll()
+        
+        // 카드 UI 업데이트
+        updateNutritionCards()
+        updateBloodSugarCard()
     }
 }
