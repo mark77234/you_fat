@@ -35,10 +35,10 @@ class HomeViewModel: ObservableObject {
     private func setupInitialCards() {
         self.cards = [
             CardData(
-                cardIcon:"grape",
+                cardIcon:"popo",
                 main_title:"포포님 안녕하세요 !",
                 description: "오늘의 칼로리 및 혈당수치를 확인하세요.",
-                backgroundColor: Color.white,
+                backgroundColor: .grayBackground,
                 mainTextColor: Color.black,
                 subTextColor: Color.gray,
                 height: 100
