@@ -44,7 +44,7 @@ class HomeViewModel: ObservableObject {
                 height: 100
             ),
             CardData(
-                title:"오늘의 평균혈당",
+                title:"최근 혈당 측정값",
                 blood_count:0,
                 backgroundColor: Color.white,
                 mainTextColor: Color.black,
@@ -204,19 +204,19 @@ class HomeViewModel: ObservableObject {
     private func updateBloodSugarCard() {
         let measurements = bloodDataList.map { $0.bloodSugar }
         let count = measurements.count
-        let average = count > 0 ? measurements.reduce(0, +) / Double(count) : 0
+        let recent = measurements.last ?? 0
                 
         guard cards.indices.contains(1) else { return }
         
         var updatedCard = cards[1]
-        updatedCard.blood_progress = Float(average)
+        updatedCard.blood_progress = Float(recent)
         updatedCard.max = 200
         updatedCard.blood_count = count
 
-        if average < 100 {
+        if recent < 100 {
             updatedCard.stat = "낮음"
             updatedCard.blood_progress_color = Color.blue
-        } else if average < 150 {
+        } else if recent < 150 {
             updatedCard.stat = "정상"
             updatedCard.blood_progress_color = .deepPurple
         } else {
