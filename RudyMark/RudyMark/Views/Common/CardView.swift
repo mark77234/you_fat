@@ -52,17 +52,16 @@ struct CardView: View{
                 if let progress = card.progress {
                     VStack(alignment: .center) {
                         HStack(alignment: .center, spacing: 10) {
-                            Image(.grapeIcon)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 24, height: 24)
                             (
-                                Text("\(Int(progress))").bold().foregroundColor(.black)
-                                + Text(" / \(Int(card.max ?? 2000)) kcal").foregroundColor(.gray)
+                                Text("\(Int(progress))").bold().foregroundColor(.black).font(.title)
+                                + Text(" / \(Int(card.max ?? 2000)) kcal").foregroundColor(.gray).font(.title3)
                             )
-                            .font(.title2)
                         }
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        .frame(height: 80)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 16)
+                        .background(Color(red: 0.94, green: 0.92, blue: 0.99))
+                        .cornerRadius(20)
                     }
                 }
                 
@@ -154,7 +153,7 @@ struct CardView: View{
                     Image(.popo)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 60, height: 60)
+                        .frame(width: 80, height: 80)
                 }
             }
         }
