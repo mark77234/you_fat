@@ -31,12 +31,24 @@ class HomeViewModel: ObservableObject {
         loadBloodData()
     }
     
+    private func getUserName() -> String {
+            guard let data = UserDefaults.standard.data(forKey: "savedUser"),
+                  let user = try? JSONDecoder().decode(User.self, from: data),
+                  !user.name.isEmpty else {
+                return "회원" // 기본값
+            }
+            return user.name
+        }
+
+    
     // 초기 카드 설정
     private func setupInitialCards() {
+        let userName = getUserName()
+
         self.cards = [
             CardData(
                 cardIcon:"popo",
-                main_title:"포포님 안녕하세요 !",
+                main_title:"\(userName)님 안녕하세요 !",
                 description: "오늘의 칼로리 및 혈당수치를 확인하세요.",
                 backgroundColor: .grayBackground,
                 mainTextColor: Color.black,
