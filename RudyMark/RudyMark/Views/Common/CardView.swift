@@ -113,32 +113,74 @@ struct CardView: View{
                                 NavigationLink(destination: destination) {
                                     HStack {
                                         if let icon = button.icon {
-                                            Image(systemName: icon)
+                                            icon
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width:40,height:40)
                                         }
+                                        Spacer()
+                                        VStack{
+                                            if let buttonName = button.name{
+                                                Text(buttonName)
+                                                    .font(.title3)
+                                                    .bold()
+                                            }
+                                            if let lastBlood = button.lastBlood{
+                                                Text(lastBlood)
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.gray)
+                                            }
+                                            if let lastDayKcal = button.lastDayKcal{
+                                                Text(lastDayKcal)
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.gray)
+                                            }
+                                        }
+                                        Spacer()
+                                        Image(systemName: "plus.circle.fill")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 30, height: 30)
+                                            .foregroundColor(.deepPurple)
                                         
-                                        Text(button.name)
                                     }
                                     .padding()
                                     .frame(maxWidth: .infinity)
                                     .background(button.buttonColor)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(8)
+                                    .foregroundColor(.black)
+                                    .cornerRadius(12)
                                     
                                 }
                             } else {
                                 Button(action: {
-                                    print("\(button.name) 버튼이 눌렸습니다!")
+                                    print("버튼이 눌렸습니다!")
                                 }) {
                                     HStack {
                                         if let icon = button.icon {
-                                            Image(systemName: icon)
+                                            icon
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width:20,height:20)
                                         }
-                                        Text(button.name)
+                                        VStack{
+                                            if let buttonName = button.name{
+                                                Text(buttonName)
+                                                    .font(.title3)
+                                                    .bold()
+                                            }
+                                            if let lastDayKcal = button.lastDayKcal{
+                                                Text(lastDayKcal)
+                                                    .font(.subheadline)
+                                            }
+                                        }
+                                        
+                                        Image(systemName: "plus.circle.fill")
+                                            .foregroundColor(.deepPurple)
                                     }
                                     .padding()
                                     .background(Color.gray.opacity(0.5)) // 비활성화 버튼 스타일
-                                    .foregroundColor(.white)
-                                    .cornerRadius(8)
+                                    .foregroundColor(.black)
+                                    .cornerRadius(12)
                                 }
                                 .disabled(true) // destination이 없으면 버튼 비활성화
                             }
