@@ -31,20 +31,32 @@ class HomeViewModel: ObservableObject {
         loadBloodData()
     }
     
+    private func getUserName() -> String {
+            guard let data = UserDefaults.standard.data(forKey: "savedUser"),
+                  let user = try? JSONDecoder().decode(User.self, from: data),
+                  !user.name.isEmpty else {
+                return "회원" // 기본값
+            }
+            return user.name
+        }
+
+    
     // 초기 카드 설정
     private func setupInitialCards() {
+        let userName = getUserName()
+
         self.cards = [
             CardData(
-                cardIcon:"grape",
-                main_title:"포포님 안녕하세요 !",
+                cardIcon:"popo",
+                main_title:"\(userName)님 안녕하세요 !",
                 description: "오늘의 칼로리 및 혈당수치를 확인하세요.",
-                backgroundColor: Color.white,
+                backgroundColor: .grayBackground,
                 mainTextColor: Color.black,
                 subTextColor: Color.gray,
                 height: 100
             ),
             CardData(
-                title:"오늘의 평균혈당",
+                title:"최근 혈당 측정값",
                 blood_count:0,
                 backgroundColor: Color.white,
                 mainTextColor: Color.black,
@@ -204,19 +216,19 @@ class HomeViewModel: ObservableObject {
     private func updateBloodSugarCard() {
         let measurements = bloodDataList.map { $0.bloodSugar }
         let count = measurements.count
-        let average = count > 0 ? measurements.reduce(0, +) / Double(count) : 0
+        let recent = measurements.last ?? 0
                 
         guard cards.indices.contains(1) else { return }
         
         var updatedCard = cards[1]
-        updatedCard.blood_progress = Float(average)
+        updatedCard.blood_progress = Float(recent)
         updatedCard.max = 200
         updatedCard.blood_count = count
 
-        if average < 100 {
+        if recent < 100 {
             updatedCard.stat = "낮음"
             updatedCard.blood_progress_color = Color.blue
-        } else if average < 150 {
+        } else if recent < 150 {
             updatedCard.stat = "정상"
             updatedCard.blood_progress_color = .deepPurple
         } else {
