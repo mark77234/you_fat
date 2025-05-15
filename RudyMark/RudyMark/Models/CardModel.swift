@@ -16,9 +16,11 @@ struct MiniCard{
 }
 
 struct CustomButton{
-    let name: String
+    var name: String?
+    var lastDayKcal: String?
+    var lastBlood: String?
     let buttonColor: Color?
-    var icon: String?
+    var icon: Image?
     var destination: AnyView?
 }
 
