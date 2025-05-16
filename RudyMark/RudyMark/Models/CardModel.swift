@@ -28,7 +28,7 @@ struct CardData {
     var cardIcon: Image?
     var main_title: String?
     var title: String?
-    var description: String?
+    var popoMessage: String?
     var blood_count: Int?
     let backgroundColor: Color
     let mainTextColor: Color
