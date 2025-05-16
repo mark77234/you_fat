@@ -14,9 +14,6 @@ struct CardView: View{
         ZStack(alignment: .topTrailing) {
             VStack(alignment: .leading,spacing: 20){
                 HStack{
-                    if card.cardIcon != nil {
-                        Image(systemName: card.cardIcon ?? "questionmark2")
-                    }
                     if card.main_title != nil {
                         Text(card.main_title ?? "메인 타이틀")
                             .font(.title2)
@@ -190,9 +187,9 @@ struct CardView: View{
                 
                 
             }
-            if card.cardIcon != nil {
+            if let cardIcon = card.cardIcon {
                 ZStack {
-                    Image(.popo)
+                    cardIcon
                         .resizable()
                         .scaledToFit()
                         .frame(width: 80, height: 80)

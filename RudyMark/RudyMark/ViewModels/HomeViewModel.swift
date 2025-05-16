@@ -47,7 +47,7 @@ class HomeViewModel: ObservableObject {
 
         self.cards = [
             CardData(
-                cardIcon:"popo",
+                cardIcon: Image(.popo),
                 main_title:"\(userName)님 안녕하세요 !",
                 description: "오늘의 칼로리 및 혈당수치를 확인하세요.",
                 backgroundColor: .grayBackground,

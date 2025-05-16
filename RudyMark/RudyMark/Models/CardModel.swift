@@ -25,7 +25,7 @@ struct CustomButton{
 }
 
 struct CardData {
-    var cardIcon: String?
+    var cardIcon: Image?
     var main_title: String?
     var title: String?
     var description: String?
