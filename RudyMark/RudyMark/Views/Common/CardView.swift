@@ -157,25 +157,36 @@ struct CardView: View{
                                             icon
                                                 .resizable()
                                                 .scaledToFit()
-                                                .frame(width:20,height:20)
+                                                .frame(width:40,height:40)
                                         }
+                                        Spacer()
                                         VStack{
                                             if let buttonName = button.name{
                                                 Text(buttonName)
                                                     .font(.title3)
                                                     .bold()
                                             }
+                                            if let lastBlood = button.lastBlood{
+                                                Text(lastBlood)
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.gray)
+                                            }
                                             if let lastDayKcal = button.lastDayKcal{
                                                 Text(lastDayKcal)
                                                     .font(.subheadline)
+                                                    .foregroundColor(.gray)
                                             }
                                         }
-                                        
+                                        Spacer()
                                         Image(systemName: "plus.circle.fill")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 30, height: 30)
                                             .foregroundColor(.deepPurple)
                                     }
                                     .padding()
-                                    .background(Color.gray.opacity(0.5)) // 비활성화 버튼 스타일
+                                    .frame(maxWidth: .infinity)
+                                    .background(button.buttonColor)
                                     .foregroundColor(.black)
                                     .cornerRadius(12)
                                 }

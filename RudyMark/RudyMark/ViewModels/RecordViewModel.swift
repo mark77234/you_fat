@@ -26,7 +26,6 @@ class RecordViewModel : ObservableObject {
             ),
             CardData(
                 title:"오늘의 식사",
-                description: "건강한 하루를 기록해보세요",
                 backgroundColor: .white,
                 mainTextColor: Color.black,
                 subTextColor: Color.gray,
