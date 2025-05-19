@@ -23,7 +23,7 @@ struct MoreView: View {
                         .resizable()
                         .frame(width: 100, height: 100)
                         .foregroundColor(.purple)
-//                    Text(viewModel.name)
+//                    Text(viewModel.name) 나중에 수정해야함
                     Text("포포")
                         .font(.title2)
                         .fontWeight(.bold)
@@ -39,7 +39,7 @@ struct MoreView: View {
                         Button(action: {
                             isEditing = true
                         }) {
-                            Text("수정")
+                            Text("수정") // 버튼 이미지로 바꿔 넣어야함
                                 .font(.caption)
                                 .padding(6)
                                 .background(Color.purple.opacity(0.1))
@@ -54,23 +54,18 @@ struct MoreView: View {
                     Divider()
                         .background(.gray)
 
-                    InfoRow(title: "키", value: "\(String(describing: Int(viewModel.height))) cm")
+                    InfoRow(title: "키", value: "\(viewModel.height) cm")
                     
                     Divider()
                         .background(.gray)
                     
-                    InfoRow(title: "몸무게", value: "\(String(describing: Int(viewModel.weight))) kg")
+                    InfoRow(title: "몸무게", value: "\(viewModel.weight) kg")
                     
                     Divider()
                         .background(.gray)
                     
-                    InfoRow(title: "성별", value: {
-                        if viewModel.isMale {
-                            return viewModel.isMale ? "남성" : "여성"
-                        } else {
-                            return "미선택"
-                        }
-                    }())
+                    InfoRow(title: "성별", value: "\(viewModel.isMale ? "남자" : "여자")")
+                    
                 }
                 .padding()
                 .background(Color.white)
@@ -116,4 +111,3 @@ struct InfoRow: View {
     return MoreView()
         .environmentObject(viewModel)
 }
-

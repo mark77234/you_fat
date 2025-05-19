@@ -11,6 +11,11 @@ struct ProfileSettingView: View {
     @EnvironmentObject private var viewModel: UserViewModel
     @Environment(\.dismiss) private var dismiss
     
+    @State private var tempName: String = ""
+    @State private var tempHeight: String = ""
+    @State private var tempWeight: String = ""
+    @State private var tempIsMale: Bool = true
+    
     var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "person.crop.circle.fill.badge.checkmark")
@@ -46,6 +51,12 @@ struct ProfileSettingView: View {
             .background(Color.purple)
             .foregroundColor(.white)
             .cornerRadius(12)
+        }
+        .onAppear {
+            tempName = viewModel.name
+            tempHeight = viewModel.height
+            tempWeight = viewModel.weight
+            tempIsMale = viewModel.isMale
         }
         .padding()
         .navigationTitle("내 정보")
