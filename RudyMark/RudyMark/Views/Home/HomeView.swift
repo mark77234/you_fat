@@ -19,7 +19,6 @@ struct HomeView: View {
                     card in CardView(card: card)
                 }
             }
-//            .padding(.vertical,50)
             .background(
                 .grayBackground
             )
