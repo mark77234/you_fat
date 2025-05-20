@@ -1,21 +1,20 @@
-// FoodView.swift
 import SwiftUI
 import SwiftData
 
 struct FoodView: View {
     @Environment(\.modelContext) private var context
     @EnvironmentObject var homeViewModel: HomeViewModel
-    @EnvironmentObject var selectedFoodsViewModel: SelectedFoodsViewModel
-    
+    @EnvironmentObject var cartViewModel: CartViewModel // 변경: SelectedFoodsViewModel -> CartViewModel
+
     @State private var foods: [Food] = []
     @State private var searchQuery: String = ""
     @State private var foodToConfirm: Food?
-    
+
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 SearchBar(text: $searchQuery, onSearch: fetchFoods)
-                
+
                 Group {
                     if searchQuery.isEmpty {
                         EmptyStateView()
@@ -25,18 +24,17 @@ struct FoodView: View {
                         FoodListView(foods: foods, onSelect: { foodToConfirm = $0 })
                     }
                 }
-                
-                if !selectedFoodsViewModel.selectedFoods.isEmpty {
-                    SelectedFoodsView(
-                        selectedFoods: selectedFoodsViewModel.selectedFoods,
-                        onRemove: { food in
-                            selectedFoodsViewModel.remove(food)
-                            homeViewModel.removeFood(food)
-                        }
-                    )
-                }
             }
             .navigationTitle("오늘의 식사")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        CartView()
+                    } label: {
+                        CartButton(count: cartViewModel.selectedFoods.count)
+                    }
+                }
+            }
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
         }
         .alert("음식을 추가할까요?", isPresented: Binding<Bool>(
@@ -45,8 +43,7 @@ struct FoodView: View {
         )) {
             Button("추가") {
                 if let food = foodToConfirm {
-                    selectedFoodsViewModel.add(food)
-                    homeViewModel.addFood(food)
+                    cartViewModel.add(food) // 변경: 장바구니에만 추가
                 }
                 foodToConfirm = nil
             }
@@ -55,14 +52,14 @@ struct FoodView: View {
             }
         } message: {
             if let food = foodToConfirm {
-                Text("\(food.name) (\(food.kcal, specifier: "%.0f")kcal)을 추가합니다.")
+                Text("\(food.name) (\(food.kcal, specifier: "%.0f")kcal)을 장바구니에 담습니다.")
             }
         }
     }
-    
+
     private func fetchFoods() {
         guard !searchQuery.isEmpty else { return }
-        
+
         do {
             let descriptor = FetchDescriptor<Food>(
                 predicate: #Predicate { $0.name.localizedStandardContains(searchQuery) }
@@ -71,6 +68,27 @@ struct FoodView: View {
         } catch {
             print("🔴 검색 실패: \(error)")
             foods = []
+        }
+    }
+}
+
+struct CartButton: View {
+    let count: Int
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            Image(systemName: "cart")
+                .font(.title2)
+
+            if count > 0 {
+                Text("\(count)")
+                    .font(.caption2)
+                    .padding(5)
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
+                    .offset(x: 8, y: -8)
+            }
         }
     }
 }
