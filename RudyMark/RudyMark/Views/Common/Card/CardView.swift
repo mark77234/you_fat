@@ -13,7 +13,7 @@ struct CardView: View{
         
         ZStack {
             VStack(alignment: .leading,spacing: 20){
-                MainTitleView(card: card)
+                MainTitle(card: card)
                 ProgressViewSection(card: card)
                 BloodProgressViewSection(card: card)
                 MiniCardsSection(card: card)
@@ -28,8 +28,6 @@ struct CardView: View{
         .padding(.horizontal)
     }
 }
-
-
 
 
 struct ProgressViewSection: View {
@@ -54,38 +52,7 @@ struct ProgressViewSection: View {
     }
 }
 
-struct BloodProgressViewSection: View {
-    let card: CardData
-    
-    var body: some View {
-        if let blood_progress = card.blood_progress {
-            GeometryReader { geometry in
-                ZStack {
-                    ArcProgressView(progress: Double(blood_progress) / Double(card.max ?? 200), tint: card.blood_progress_color ?? .deepPurple)
-                        .frame(height: geometry.size.width * 0.5)
-                    VStack(spacing: 4) {
-                        if let blood_count = card.blood_count {
-                            Text("\(blood_count)회")
-                                .font(.subheadline)
-                                .foregroundColor(Color.gray)
-                        }
-                        Text(card.stat ?? "미측정")
-                            .font(.title3)
-                            .bold()
-                        Text("\(Int(blood_progress))mg/dL")
-                            .foregroundColor(Color.gray)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.bottom, 60)
-                    
-                }
-                .padding(20)
-            }
-            .frame(height: 100)
-            .padding(.bottom, 20)
-        }
-    }
-}
+
 
 struct MiniCardsSection: View {
     let card: CardData
@@ -236,20 +203,7 @@ struct MiniCardView : View{
     }
 }
 
-struct ArcProgressView: View {
-    var progress: Double
-    var tint: Color
-    
-    var body: some View {
-        ZStack {
-            ArcShape(progress: 1.0)
-                .stroke(Color.gray.opacity(0.3), lineWidth: 10)
-            ArcShape(progress: progress)
-                .stroke(tint, style: StrokeStyle(lineWidth: 10, lineCap: .round))
-        }
-        .rotationEffect(.degrees(180)) // 거꾸로 U형
-    }
-}
+
 
 struct ArcShape: Shape {
     var progress: Double

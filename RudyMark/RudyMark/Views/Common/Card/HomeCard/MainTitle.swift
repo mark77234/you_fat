@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MainTitleView: View {
+struct MainTitle: View {
     let card: CardData
     
     var body: some View {
@@ -18,7 +18,6 @@ struct MainTitleView: View {
                         Text(card.title ?? "카드 타이틀")
                             .font(.headline)
                             .bold()
-                            .foregroundColor(card.mainTextColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
