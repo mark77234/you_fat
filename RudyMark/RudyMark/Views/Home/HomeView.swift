@@ -12,19 +12,17 @@ struct HomeView: View {
     
     var body: some View {
         ZStack{
-            ScrollView{
-                VStack(
-                    spacing: 30
-                ){
-                    ForEach(viewModel.cards, id: \.title){
-                        card in CardView(card: card)
-                    }
+            VStack(
+                spacing: 30
+            ){
+                ForEach(viewModel.cards, id: \.title){
+                    card in CardView(card: card)
                 }
-                .padding(.vertical,50)
-                .background(
-                    .grayBackground
-                )
             }
+            .background(
+                .grayBackground
+            )
+            
         }
     }
 }

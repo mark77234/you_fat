@@ -18,36 +18,35 @@ class RecordViewModel : ObservableObject {
                 mainTextColor: Color.black,
                 subTextColor: Color.gray,
                 height: 150,
-                MealButtons: [
-                    CustomButton(lastBlood:"오늘 측정한 혈당을 포포에게 알려주세요!",
+                customButtons: [
+                    CardCustomButton(lastBlood:"오늘 측정한 혈당을 포포에게 알려주세요!",
                                  buttonColor: .white,
                                  destination: AnyView(BloodView()))
                 ]
             ),
             CardData(
                 title:"오늘의 식사",
-                description: "건강한 하루를 기록해보세요",
                 backgroundColor: .white,
                 mainTextColor: Color.black,
                 subTextColor: Color.gray,
                 height: 150,
-                MealButtons: [
-                    CustomButton(name:"아침",
+                customButtons: [
+                    CardCustomButton(name:"아침",
                                  lastDayKcal:"어제 섭취한 칼로리: n kcal",
                                  buttonColor: .grayBackground,
                                  icon: Image(.sun),
                                  destination: AnyView(FoodView())),
-                    CustomButton(name:"점심",
+                    CardCustomButton(name:"점심",
                                  lastDayKcal:"어제 섭취한 칼로리: n kcal",
                                  buttonColor: .grayBackground,
                                  icon: Image(.cloud),
                                  destination: AnyView(FoodView())),
-                    CustomButton(name:"저녁",
+                    CardCustomButton(name:"저녁",
                                  lastDayKcal:"어제 섭취한 칼로리: n kcal",
                                  buttonColor: .grayBackground,
                                  icon: Image(.moon),
                                  destination: AnyView(FoodView())),
-                    CustomButton(name:"간식",
+                    CardCustomButton(name:"간식",
                                  lastDayKcal:"어제 섭취한 칼로리: n kcal",
                                  buttonColor: .grayBackground,
                                  icon: Image(.cookie),
