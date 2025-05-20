@@ -11,8 +11,6 @@ struct RecordView: View {
     @StateObject var viewModel = RecordViewModel()
     var body: some View {
         ZStack{
-            Color.greenBackground
-                .ignoresSafeArea()
             ScrollView{
                 VStack(
                     spacing: 30
