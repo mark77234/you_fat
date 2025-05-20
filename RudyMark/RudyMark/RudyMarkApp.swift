@@ -33,6 +33,7 @@ struct RudyMarkApp: App {
     var body: some Scene {
         WindowGroup {
             FirstInputView()
+                .environmentObject(CartViewModel())
                 .environmentObject(homeViewModel)
                 .environmentObject(userViewModel)
                 .environmentObject(selectedFoodsViewModel)

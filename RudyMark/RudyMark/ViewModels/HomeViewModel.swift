@@ -146,7 +146,6 @@ class HomeViewModel: ObservableObject {
         newCards[2] = updatedCard
         cards = newCards
     }
-    
     // 음식 추가 시 호출되는 메서드
     func addFood(_ food: Food) {
         food.isUserAdded = true
