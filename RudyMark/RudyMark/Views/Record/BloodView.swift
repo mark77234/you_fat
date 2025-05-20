@@ -6,144 +6,56 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct BloodView: View {
     @StateObject private var viewModel = BloodViewModel()
     @EnvironmentObject var homeViewModel: HomeViewModel
     @Environment(\.presentationMode) var presentationMode
     
-
+    
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color(.systemGroupedBackground)
-                    .ignoresSafeArea()
-
-                ScrollView {
-                    VStack(spacing: 20) {
-                    // 혈당 수치 입력 카드
-                    BloodCardView {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("혈당 수치 (mg/dL)")
-                                .font(.headline)
-                            TextField("혈당 수치를 입력하세요", value: $viewModel.data.bloodSugar, format: .number)
-                                .keyboardType(.numberPad)
-                                .padding()
-                                .frame(height: 50)
-                                .background(Color.white)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                )
-                                .padding(.horizontal)
-                        }
-                    }
-
-                    // 식사 관련 버튼 카드
-                    BloodCardView {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("식사 관련")
-                                .font(.headline)
-                            HStack {
-                                ForEach(viewModel.mealStates, id: \.self) { state in
-                                    Button(action: {
-                                        viewModel.data.selectedMealState = state
-                                    }) {
-                                        Text(state)
-                                            .padding(10)
-                                            .frame(maxWidth: .infinity)
-                                            .background(viewModel.data.selectedMealState == state ? Color.red : Color.gray.opacity(0.3))
-                                            .foregroundColor(viewModel.data.selectedMealState == state ? Color.white : Color.black)
-                                            .cornerRadius(10)
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    BloodCardView {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("물 섭취량 (1컵 - 200ml)")
-                                .font(.headline)
-                            HStack {
-                                HStack(spacing: 20) {
-                                    Button(action: viewModel.decreaseWater) {
-                                        Image(systemName: "minus.circle.fill")
-                                            .font(.title)
-                                            .foregroundColor(.red)
-                                    }
-                                    Text("\(viewModel.data.waterIntake) 컵")
-                                        .font(.title2)
-                                    Button(action: viewModel.increaseWater) {
-                                        Image(systemName: "plus.circle.fill")
-                                            .font(.title)
-                                            .foregroundColor(.blue)
-                                    }
-                                }
-                                .frame(maxWidth: .infinity, alignment: .center)
-                            }
-                        }
-                    }
-
-                    BloodCardView {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("메모")
-                                .font(.headline)
-                            ZStack(alignment: .topLeading) {
-                                if viewModel.data.memo.isEmpty {
-                                    Text("메모를 작성하세요")
-                                        .foregroundColor(.gray)
-                                        .padding(.top, 8)
-                                        .padding(.leading, 5)
-                                }
-                                TextEditor(text: $viewModel.data.memo)
-                                    .frame(height: 80)
-                                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
-                            }
-                        }
-                    }
-
-                        Button(action: {
-                            viewModel.saveMeasurement(homeViewModel: homeViewModel)
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            HStack {
-                                Image(systemName: "plus")
-                                Text("측정 기록하기")
-                            }
-                            .foregroundColor(.white)
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.red)
-                            .cornerRadius(12)
-                            .padding(.horizontal, 30)
-                        }
-
-                        NavigationLink(destination: BloodRecordView().environmentObject(homeViewModel)) {
-                            Text("기록 확인 및 삭제")
-                                .foregroundColor(.blue)
-                                .font(.subheadline)
-                                .padding(.top, 10)
-                        }
-                    }
-                    .padding(.vertical, 50)
-                }
-                .onTapGesture {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        ScrollView {
+            VStack(spacing: 20) {
+                TimeCardView(currentTime: formattedCurrentTime())
+                BloodSugarCardView(
+                    bloodSugar: $viewModel.data.bloodSugar,
+                    selectedMealState: Binding(
+                        get: { viewModel.data.selectedMealState ?? "" },
+                        set: { viewModel.data.selectedMealState = $0 }
+                    )
+                )
+                WaterIntakeCardView(cups: $viewModel.data.waterIntake)
+                
+                Button(action: {
+                    viewModel.saveMeasurement(homeViewModel: homeViewModel)
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("저장하기")
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.purple)
+                        .cornerRadius(12)
+                        .padding(.horizontal, 30)
                 }
             }
+            .padding(.horizontal)
+        }
+        .background(Color(.systemGroupedBackground))
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
     }
 }
 
 struct BloodCardView<Content: View>: View {
     let content: Content
-
+    
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
-
+    
     var body: some View {
         VStack {
             content
@@ -152,14 +64,14 @@ struct BloodCardView<Content: View>: View {
         .padding()
         .background(Color.white)
         .cornerRadius(12)
-        .padding(.horizontal, 30)
+        .padding(.horizontal)
     }
 }
 
 
 struct BloodRecordView: View {
     @EnvironmentObject var homeViewModel: HomeViewModel
-
+    
     var body: some View {
         List {
             ForEach(Array(homeViewModel.bloodSugarMeasurements.enumerated()), id: \.offset) { index, value in
@@ -177,5 +89,154 @@ struct BloodRecordView: View {
         .toolbar {
             EditButton()
         }
+    }
+}
+
+func formattedCurrentTime() -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy년 M월 d일 a h:mm"
+    formatter.locale = Locale(identifier: "ko_KR")
+    return formatter.string(from: Date())
+}
+
+struct TimeCardView: View {
+    let currentTime: String
+    
+    var body: some View {
+        Text(currentTime)
+            .font(.headline)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.white)
+            .foregroundColor(.gray)
+            .cornerRadius(12)
+            .padding(.horizontal)
+    }
+}
+
+struct BloodSugarCardView: View {
+    @Binding var bloodSugar: Double
+    @Binding var selectedMealState: String
+    let mealStates = ["취침 전", "식전", "식후", "공복"]
+    let minSugar = 0.0
+    let maxSugar = 200.0
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("혈당")
+                .font(.headline)
+            HStack {
+                Picker("식사 상태", selection: $selectedMealState) {
+                    ForEach(mealStates, id: \.self) { state in
+                        Text(state)
+                    }
+                }
+                .pickerStyle(.inline)
+                .frame(height: 100)
+                
+                Text("\(Int(bloodSugar))")
+                    .font(.title)
+                    .bold()
+                    .frame(minWidth: 100, alignment: .center)
+                Text("mg/dL")
+                    .font(.title3)
+                    .foregroundColor(.gray)
+                
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            
+            Slider(value: $bloodSugar, in: minSugar...maxSugar)
+                .accentColor(.purple)
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(Color.white)
+        .cornerRadius(12)
+        .padding(.horizontal)
+        
+    }
+}
+
+struct WaterIntakeCardView: View {
+    @Binding var cups: Int
+    let maxCups: Int = 10
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("물 섭취량\n(1컵 - 200ml)")
+                .font(.headline)
+                .multilineTextAlignment(.center)
+
+            HStack(spacing: 16) {
+                Button(action: {
+                    if cups > 0 {
+                        cups = max(0, cups - 1)
+                    }
+                }) {
+                    Image(systemName: "minus.circle.fill")
+                        .font(.title)
+                        .foregroundColor(.purple)
+                }
+
+                Text("\(cups)컵")
+                    .font(.title2)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 24)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(20)
+
+                Button(action: {
+                    if cups < maxCups {
+                        cups = min(maxCups, cups + 1)
+                    }
+                }) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title)
+                        .foregroundColor(.purple)
+                }
+            }
+
+            Text("총 \(cups * 200)ml")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+
+            let rows = [0..<5, 5..<10]
+            ForEach(rows, id: \.self) { range in
+                HStack(spacing: 16) {
+                    ForEach(range, id: \.self) { index in
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(Color.black, lineWidth: 1.5)
+                                .frame(width: 35, height: 55)
+
+                            if index < cups {
+                                VStack {
+                                    Spacer()
+                                    Rectangle()
+                                        .fill(Color.blue.opacity(0.6))
+                                        .frame(height: 25)
+                                        .cornerRadius(3)
+                                }
+                                .frame(width: 35, height: 55)
+                            }
+
+                            if index == cups && index < maxCups {
+                                Text("+")
+                                    .font(.title3)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .onTapGesture {
+                            cups = index + 1
+                        }
+                    }
+                }
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(Color.white)
+        .cornerRadius(12)
+        .padding(.horizontal)
     }
 }
