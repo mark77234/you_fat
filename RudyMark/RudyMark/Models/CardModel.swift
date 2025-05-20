@@ -15,7 +15,7 @@ struct MiniCard{
     var barColor: Color?
 }
 
-struct RecordButton{
+struct CardCustomButton{
     var name: String?
     var lastDayKcal: String?
     var lastBlood: String?
@@ -43,5 +43,5 @@ struct CardData {
     var miniCards: [MiniCard]?
     var miniCardsColor: Color?
     var miniCardsSize: CGFloat?
-    var MealButtons: [RecordButton]?
+    var customButtons: [CardCustomButton]?
 }

@@ -11,10 +11,10 @@ struct RecordCard: View {
     
     var body: some View {
         Group {
-            if let mealButtons = card.MealButtons {
+            if let mealButtons = card.customButtons {
                 VStack(spacing: 16) {
                     ForEach(mealButtons, id: \.name) { button in
-                        RecordButton(button: button)
+                        CustomButtonView(button: button)
                     }
                 }
             }
@@ -22,8 +22,8 @@ struct RecordCard: View {
     }
 }
 
-struct RecordButton: View {
-    let button: RecordButton
+struct CustomButtonView: View {
+    let button: CardCustomButton
     
     var body: some View {
         Group {
