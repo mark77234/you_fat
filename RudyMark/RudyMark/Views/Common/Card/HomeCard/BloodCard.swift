@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct BloodProgressViewSection: View {
+struct BloodCard: View {
     let card: CardData
     
     var body: some View {
