@@ -64,7 +64,38 @@ struct FoodView: View {
             let descriptor = FetchDescriptor<Food>(
                 predicate: #Predicate { $0.name.localizedStandardContains(searchQuery) }
             )
-            foods = try context.fetch(descriptor)
+            let fetchedFoods = try context.fetch(descriptor)
+            
+            // 정확도 순 정렬 로직
+            foods = fetchedFoods.sorted { a, b in
+                let query = searchQuery.lowercased()
+                let aName = a.name.lowercased()
+                let bName = b.name.lowercased()
+                
+                // 1. 정확히 일치하는 경우
+                let aExact = aName == query
+                let bExact = bName == query
+                if aExact != bExact {
+                    return aExact
+                }
+                
+                // 2. 검색어로 시작하는 경우
+                let aStartsWith = aName.hasPrefix(query)
+                let bStartsWith = bName.hasPrefix(query)
+                if aStartsWith != bStartsWith {
+                    return aStartsWith
+                }
+                
+                // 3. 검색어가 포함된 위치 (빠른 위치가 우선)
+                let aRange = aName.range(of: query)!
+                let bRange = bName.range(of: query)!
+                if aRange.lowerBound != bRange.lowerBound {
+                    return aRange.lowerBound < bRange.lowerBound
+                }
+                
+                // 4. 이름 길이가 짧은 순 (정확도가 높을 가능성)
+                return a.name.count < b.name.count
+            }
         } catch {
             print("🔴 검색 실패: \(error)")
             foods = []
