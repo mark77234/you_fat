@@ -41,12 +41,14 @@ struct BloodView: View {
                 }
             }
             .padding(.horizontal)
-            .background(
-                .grayBackground
-            )
+           
         }
+        .background(
+            .grayBackground
+        )
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        
         }
     }
 }
