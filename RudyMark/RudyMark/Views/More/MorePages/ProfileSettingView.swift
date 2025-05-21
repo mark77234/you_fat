@@ -14,36 +14,25 @@ struct ProfileSettingView: View {
     @State private var tempName: String = ""
     @State private var tempHeight: String = ""
     @State private var tempWeight: String = ""
-    @State private var tempIsMale: Bool = true
     
     var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "person.crop.circle.fill.badge.checkmark")
                 .resizable()
-                .frame(width: 100, height: 100)
+                .scaledToFit()
+                .frame(width: 100)
                 .foregroundColor(.purple)
             
-            TextField("이름", text: $viewModel.name)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            TextField("키(cm)", text: $viewModel.height)
-                .keyboardType(.decimalPad)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            TextField("몸무게(kg)", text: $viewModel.weight)
-                .keyboardType(.decimalPad)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            Picker("성별", selection: $viewModel.isMale) {
-                Text("남성").tag(true)
-                Text("여성").tag(false)
-            }
-            .pickerStyle(SegmentedPickerStyle())
+            LabeledTextField(title: "이름", text: $tempName, placeholder: "이름을 입력하세요")
+            LabeledTextField(title: "키(cm)", text: $tempHeight, keyboardType: .decimalPad, placeholder: "예: 160")
+            LabeledTextField(title: "몸무게(kg)", text: $tempWeight, keyboardType: .decimalPad, placeholder: "예: 55")
             
             Spacer()
             
             Button("저장") {
-                viewModel.save()
+                viewModel.name = tempName
+                viewModel.height = tempHeight
+                viewModel.weight = tempWeight
                 dismiss()
             }
             .padding()
@@ -56,10 +45,10 @@ struct ProfileSettingView: View {
             tempName = viewModel.name
             tempHeight = viewModel.height
             tempWeight = viewModel.weight
-            tempIsMale = viewModel.isMale
         }
         .padding()
         .navigationTitle("내 정보")
+        .background(Color.skyblue.ignoresSafeArea())
     }
 }
 
@@ -67,4 +56,29 @@ struct ProfileSettingView: View {
     let viewModel = UserViewModel()
     return ProfileSettingView()
         .environmentObject(viewModel)
+}
+
+struct LabeledTextField: View {
+    let title: String
+    @Binding var text: String
+    var keyboardType: UIKeyboardType = .default
+    var placeholder: String = ""
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.setPretendard(weight: .regular, size: 14))
+                .foregroundStyle(.black)
+
+            TextField(placeholder, text: $text)
+                .keyboardType(keyboardType)
+                .padding(12)
+                .background(Color.white)
+                .cornerRadius(12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                )
+        }
+    }
 }
