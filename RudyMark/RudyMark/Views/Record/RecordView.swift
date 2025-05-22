@@ -29,7 +29,3 @@ struct RecordView: View {
     }
 }
 
-
-#Preview {
-    RecordView()
-}

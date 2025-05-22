@@ -35,7 +35,7 @@ class RecordViewModel : ObservableObject {
                                  lastDayKcal:"어제 섭취한 칼로리: n kcal",
                                  buttonColor: .grayBackground,
                                  icon: Image(.sun),
-                                 destination: AnyView(FoodView())),
+                                 destination: AnyView(CartView())),
                     CardCustomButton(name:"점심",
                                  lastDayKcal:"어제 섭취한 칼로리: n kcal",
                                  buttonColor: .grayBackground,
