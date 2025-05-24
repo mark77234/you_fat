@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "popo_icon.png",
+      "filename" : "DanD.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "popo_icon 1.png",
+      "filename" : "DanD 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "popo_icon 2.png",
+      "filename" : "DanD 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

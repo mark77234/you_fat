@@ -7,23 +7,27 @@
 
 
 import SwiftUI
+import SwiftData
 
-struct BloodData {
-    var bloodSugar: String
+@Model
+final class BloodData {
+    var bloodSugar: Double
     var selectedMealState: String?
     var waterIntake: Int
     var memo: String
+    var timestamp: Date?
 
-    // 기본값이 있는 생성자 추가 ✅
     init(
-        bloodSugar: String = "",
+        bloodSugar: Double = 0.0,
         selectedMealState: String? = nil,
         waterIntake: Int = 0,
+        timestamp: Date = Date(),
         memo: String = ""
     ) {
         self.bloodSugar = bloodSugar
         self.selectedMealState = selectedMealState
         self.waterIntake = waterIntake
         self.memo = memo
+        self.timestamp = timestamp
     }
 }

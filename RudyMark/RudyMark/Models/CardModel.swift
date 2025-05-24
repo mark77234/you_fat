@@ -15,26 +15,33 @@ struct MiniCard{
     var barColor: Color?
 }
 
-struct CustomButton{
-    let name: String
+struct CardCustomButton{
+    var name: String?
+    var lastDayKcal: String?
+    var lastBlood: String?
     let buttonColor: Color?
-    var icon: String?
+    var icon: Image?
     var destination: AnyView?
-    
 }
 
 struct CardData {
-    let title: String
-    var description: String?
+    var cardIcon: Image?
+    var main_title: String?
+    var title: String?
+    var popoMessage: String?
+    var blood_count: Int?
     let backgroundColor: Color
     let mainTextColor: Color
-    let subTextColor: Color
+    var subTextColor: Color?
     let height: CGFloat
+    var stat: String?
     var progress: Float?
+    var blood_progress: Float?
+    var blood_progress_color: Color?
     var max: Float?
     var cardCount: Int?
     var miniCards: [MiniCard]?
     var miniCardsColor: Color?
     var miniCardsSize: CGFloat?
-    var MealButtons: [CustomButton]?
+    var customButtons: [CardCustomButton]?
 }

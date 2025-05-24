@@ -9,8 +9,6 @@ import SwiftUI
 class BloodViewModel: ObservableObject {
     @Published var data = BloodData()
 
-    let mealStates = ["공복", "식전", "식후"]
-
     func increaseWater() {
         data.waterIntake += 1
     }
@@ -21,7 +19,9 @@ class BloodViewModel: ObservableObject {
         }
     }
 
-    func saveMeasurement() {
+    func saveMeasurement(homeViewModel: HomeViewModel) {
+        let bloodSugarValue = data.bloodSugar
+        homeViewModel.addBloodSugarMeasurement(bloodSugarValue)
         print("혈당: \(data.bloodSugar), 식사: \(data.selectedMealState ?? "선택 안됨"), 물 섭취량: \(data.waterIntake)ml, 메모: \(data.memo)")
     }
 }
