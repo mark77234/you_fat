@@ -77,7 +77,3 @@ struct InputBloodTimeView: View {
         }
     }
 }
-
-#Preview {
-    InputBloodTimeView()
-}
