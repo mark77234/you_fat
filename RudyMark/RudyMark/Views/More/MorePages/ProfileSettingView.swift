@@ -17,11 +17,11 @@ struct ProfileSettingView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            Image(systemName: "person.crop.circle.fill.badge.checkmark")
+            
+            Image("basicProfile")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 100)
-                .foregroundColor(.purple)
+                .frame(width: 92)
             
             LabeledTextField(title: "이름", text: $tempName, placeholder: "이름을 입력하세요")
             LabeledTextField(title: "키(cm)", text: $tempHeight, keyboardType: .decimalPad, placeholder: "예: 160")
@@ -29,22 +29,26 @@ struct ProfileSettingView: View {
             
             Spacer()
             
-            Button("저장") {
-                viewModel.name = tempName
-                viewModel.height = tempHeight
-                viewModel.weight = tempWeight
-                dismiss()
-            }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color.purple)
-            .foregroundColor(.white)
-            .cornerRadius(12)
-        }
-        .onAppear {
+        }.onAppear {
             tempName = viewModel.name
             tempHeight = viewModel.height
             tempWeight = viewModel.weight
+        }
+        .toolbar {
+           
+            // 저장 버튼
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    viewModel.name = tempName
+                    viewModel.height = tempHeight
+                    viewModel.weight = tempWeight
+                    dismiss()
+                }, label: {
+                    Text("저장")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.black)
+                })
+            }
         }
         .padding()
         .navigationTitle("내 정보")
@@ -63,13 +67,13 @@ struct LabeledTextField: View {
     @Binding var text: String
     var keyboardType: UIKeyboardType = .default
     var placeholder: String = ""
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(.setPretendard(weight: .regular, size: 14))
                 .foregroundStyle(.black)
-
+            
             TextField(placeholder, text: $text)
                 .keyboardType(keyboardType)
                 .padding(12)
