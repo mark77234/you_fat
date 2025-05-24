@@ -15,7 +15,7 @@ struct CardView: View{
             VStack(alignment: .leading,spacing: 20){
                 MainTitle(card: card)
                 TodayKcalMiniCard(card: card)
-                BloodCard(card: card)
+                HomeBloodCard(card: card)
                 NutrientsMiniCardContainer(card: card)
                 RecordCard(card: card)
             }
