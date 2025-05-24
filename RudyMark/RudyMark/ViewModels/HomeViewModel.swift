@@ -47,9 +47,9 @@ class HomeViewModel: ObservableObject {
 
         self.cards = [
             CardData(
-                cardIcon:"popo",
+                cardIcon: Image(.popo),
                 main_title:"\(userName)님 안녕하세요 !",
-                description: "오늘의 칼로리 및 혈당수치를 확인하세요.",
+                popoMessage: "오늘의 칼로리 및 혈당수치를 확인하세요.",
                 backgroundColor: .grayBackground,
                 mainTextColor: Color.black,
                 subTextColor: Color.gray,
@@ -71,7 +71,7 @@ class HomeViewModel: ObservableObject {
             ),
             CardData(
                 title:"오늘 섭취한 칼로리",
-                description: nil,
+                popoMessage: nil,
                 backgroundColor: Color.white,
                 mainTextColor: Color.black,
                 subTextColor: Color.black,
@@ -146,7 +146,6 @@ class HomeViewModel: ObservableObject {
         newCards[2] = updatedCard
         cards = newCards
     }
-    
     // 음식 추가 시 호출되는 메서드
     func addFood(_ food: Food) {
         food.isUserAdded = true
