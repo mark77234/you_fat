@@ -18,7 +18,7 @@ struct BloodView: View {
         ScrollView {
             VStack(spacing: 20) {
                 TimeCardView(currentTime: formattedCurrentTime())
-                BloodSugarCardView(
+                BloodCardView(
                     bloodSugar: $viewModel.data.bloodSugar,
                     selectedMealState: Binding(
                         get: { viewModel.data.selectedMealState ?? "" },
@@ -50,25 +50,6 @@ struct BloodView: View {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
         }
-    }
-}
-
-struct BloodCardView<Content: View>: View {
-    let content: Content
-    
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-    
-    var body: some View {
-        VStack {
-            content
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color.white)
-        .cornerRadius(12)
-        .padding(.horizontal)
     }
 }
 

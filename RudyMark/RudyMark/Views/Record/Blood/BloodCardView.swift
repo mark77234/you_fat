@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BloodSugarCardView: View {
+struct BloodCardView: View {
     @Binding var bloodSugar: Double
     @Binding var selectedMealState: String
     let mealStates = ["취침 전", "식전", "식후", "공복"]
