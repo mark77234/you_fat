@@ -96,27 +96,8 @@ struct BloodRecordView: View {
     }
 }
 
-func formattedCurrentTime() -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy년 M월 d일 a h:mm"
-    formatter.locale = Locale(identifier: "ko_KR")
-    return formatter.string(from: Date())
-}
 
-struct TimeCardView: View {
-    let currentTime: String
-    
-    var body: some View {
-        Text(currentTime)
-            .font(.headline)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color.white)
-            .foregroundColor(.gray)
-            .cornerRadius(12)
-            .padding(.horizontal)
-    }
-}
+
 
 struct BloodSugarCardView: View {
     @Binding var bloodSugar: Double
