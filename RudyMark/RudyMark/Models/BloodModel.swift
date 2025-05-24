@@ -15,7 +15,7 @@ final class BloodData {
     var selectedMealState: String?
     var waterIntake: Int
     var memo: String
-    var timestamp: Date
+    var timestamp: Date?
 
     init(
         bloodSugar: Double = 0.0,
