@@ -73,74 +73,7 @@ struct BloodCardView<Content: View>: View {
 }
 
 
-struct BloodRecordView: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
-    
-    var body: some View {
-        List {
-            ForEach(Array(homeViewModel.bloodSugarMeasurements.enumerated()), id: \.offset) { index, value in
-                HStack {
-                    Text("혈당 \(index + 1)")
-                    Spacer()
-                    Text("\(Int(value)) mg/dL")
-                }
-            }
-            .onDelete { indexSet in
-                homeViewModel.removeBloodSugarMeasurement(at: indexSet)
-            }
-        }
-        .navigationTitle("혈당 기록")
-        .toolbar {
-            EditButton()
-        }
-    }
-}
 
-
-
-
-struct BloodSugarCardView: View {
-    @Binding var bloodSugar: Double
-    @Binding var selectedMealState: String
-    let mealStates = ["취침 전", "식전", "식후", "공복"]
-    let minSugar = 0.0
-    let maxSugar = 200.0
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            Text("혈당")
-                .font(.headline)
-            HStack {
-                Picker("식사 상태", selection: $selectedMealState) {
-                    ForEach(mealStates, id: \.self) { state in
-                        Text(state)
-                    }
-                }
-                .pickerStyle(.inline)
-                .frame(height: 100)
-                
-                Text("\(Int(bloodSugar))")
-                    .font(.title)
-                    .bold()
-                    .frame(minWidth: 100, alignment: .center)
-                Text("mg/dL")
-                    .font(.title3)
-                    .foregroundColor(.gray)
-                
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-            
-            Slider(value: $bloodSugar, in: minSugar...maxSugar)
-                .accentColor(.purple)
-        }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(Color.white)
-        .cornerRadius(12)
-        .padding(.horizontal)
-        
-    }
-}
 
 struct WaterIntakeCardView: View {
     @Binding var cups: Int

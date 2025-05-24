@@ -9,8 +9,6 @@ import SwiftUI
 class BloodViewModel: ObservableObject {
     @Published var data = BloodData()
 
-    let mealStates = ["공복", "식전", "식후"]
-
     func increaseWater() {
         data.waterIntake += 1
     }
