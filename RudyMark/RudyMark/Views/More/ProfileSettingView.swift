@@ -35,7 +35,6 @@ struct ProfileSettingView: View {
             tempWeight = viewModel.weight
         }
         .toolbar {
-           
             // 저장 버튼
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
