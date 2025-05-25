@@ -109,4 +109,11 @@ lowerCamelCase
 <img src="https://github.com/user-attachments/assets/b29b92fb-8928-487e-ab21-81cb60af926e" width=20%>
 <img src="https://github.com/user-attachments/assets/7568c28b-ac91-4dd6-8478-69f8b19d4d32" width=20%>
 
+- 휴대폰 알림
 
+<img src="https://github.com/user-attachments/assets/31fbc866-d9b2-4d2c-ac3f-8ee434b8a0ee" width=20%>
+<img src="https://github.com/user-attachments/assets/a69117ad-b983-4c8e-ba12-5174826c0283" width=20%>
+<img src="https://github.com/user-attachments/assets/3e8ec3ed-015f-42d0-ae39-c7f3067c9848" width=20%>
+
+
+  
