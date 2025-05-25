@@ -13,6 +13,8 @@ struct RudyMarkApp: App {
     @StateObject private var selectedFoodsViewModel = SelectedFoodsViewModel()
     @StateObject private var homeViewModel: HomeViewModel
     @StateObject private var userViewModel = UserViewModel()
+    @StateObject private var notificationSetViewModel = NotificationSetViewModel()
+    @StateObject private var notificationTimeListViewModel = NotificationTimeListViewModel()
     
     @State private var resetTimer: Timer?
     @AppStorage("lastResetDate") private var lastResetDate: String = ""
@@ -38,12 +40,23 @@ struct RudyMarkApp: App {
                 .environmentObject(userViewModel)
                 .environmentObject(selectedFoodsViewModel)
                 .modelContainer(sharedModelContainer)
+                .environmentObject(notificationTimeListViewModel)
+                .environmentObject(notificationSetViewModel)
                 .onAppear {
                     if !UserDefaults.standard.bool(forKey: "hasImportedCSV") {
                         let importer = CSVImporter(modelContext: sharedModelContainer.mainContext)
                         importer.importFoodsFromCSV()
                         UserDefaults.standard.set(true, forKey: "hasImportedCSV")
+                        
                         homeViewModel.loadPersistedFoods()
+                        
+                        LocalNotificationManager.shared.requestNotificationPermission { granted in
+                            if granted {
+                                print("🔔 알림 사용 가능")
+                            } else {
+                                print("🚫 알림 사용 불가")
+                            }
+                        }
                     }
                     
                     setupDailyResetTimer()
