@@ -10,6 +10,9 @@ import SwiftData
 
 @main
 struct RudyMarkApp: App {
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding: Bool = false
+
+
     @StateObject private var selectedFoodsViewModel = SelectedFoodsViewModel()
     @StateObject private var homeViewModel: HomeViewModel
     @StateObject private var userViewModel = UserViewModel()
@@ -34,38 +37,72 @@ struct RudyMarkApp: App {
     
     var body: some Scene {
         WindowGroup {
-            FirstInputView()
-                .environmentObject(CartViewModel())
-                .environmentObject(homeViewModel)
-                .environmentObject(userViewModel)
-                .environmentObject(selectedFoodsViewModel)
-                .modelContainer(sharedModelContainer)
-                .environmentObject(notificationTimeListViewModel)
-                .environmentObject(notificationSetViewModel)
-                .onAppear {
-                    if !UserDefaults.standard.bool(forKey: "hasImportedCSV") {
-                        let importer = CSVImporter(modelContext: sharedModelContainer.mainContext)
-                        importer.importFoodsFromCSV()
-                        UserDefaults.standard.set(true, forKey: "hasImportedCSV")
-                        
-                        homeViewModel.loadPersistedFoods()
-                        
-                        LocalNotificationManager.shared.requestNotificationPermission { granted in
-                            if granted {
-                                print("🔔 알림 사용 가능")
-                            } else {
-                                print("🚫 알림 사용 불가")
+            if hasSeenOnboarding {
+                TabBar()
+                    .environmentObject(CartViewModel())
+                    .environmentObject(homeViewModel)
+                    .environmentObject(userViewModel)
+                    .environmentObject(selectedFoodsViewModel)
+                    .modelContainer(sharedModelContainer)
+                    .environmentObject(notificationTimeListViewModel)
+                    .environmentObject(notificationSetViewModel)
+                    .onAppear {
+                        if !UserDefaults.standard.bool(forKey: "hasImportedCSV") {
+                            let importer = CSVImporter(modelContext: sharedModelContainer.mainContext)
+                            importer.importFoodsFromCSV()
+                            UserDefaults.standard.set(true, forKey: "hasImportedCSV")
+                            
+                            homeViewModel.loadPersistedFoods()
+                            
+                            LocalNotificationManager.shared.requestNotificationPermission { granted in
+                                if granted {
+                                    print("🔔 알림 사용 가능")
+                                } else {
+                                    print("🚫 알림 사용 불가")
+                                }
                             }
                         }
+                        
+                        setupDailyResetTimer()
+                        checkForDailyReset()
                     }
-                    
-                    setupDailyResetTimer()
-                    checkForDailyReset()
-                }
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                                    checkForDailyReset()
+                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                        checkForDailyReset()
+                    }
+            }
+            else {
+                FirstInputView()
+                    .environmentObject(CartViewModel())
+                    .environmentObject(homeViewModel)
+                    .environmentObject(userViewModel)
+                    .environmentObject(selectedFoodsViewModel)
+                    .modelContainer(sharedModelContainer)
+                    .environmentObject(notificationTimeListViewModel)
+                    .environmentObject(notificationSetViewModel)
+                    .onAppear {
+                        if !UserDefaults.standard.bool(forKey: "hasImportedCSV") {
+                            let importer = CSVImporter(modelContext: sharedModelContainer.mainContext)
+                            importer.importFoodsFromCSV()
+                            UserDefaults.standard.set(true, forKey: "hasImportedCSV")
+                            
+                            homeViewModel.loadPersistedFoods()
+                            
+                            LocalNotificationManager.shared.requestNotificationPermission { granted in
+                                if granted {
+                                    print("🔔 알림 사용 가능")
+                                } else {
+                                    print("🚫 알림 사용 불가")
                                 }
-
+                            }
+                        }
+                        
+                        setupDailyResetTimer()
+                        checkForDailyReset()
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                        checkForDailyReset()
+                    }
+            }
         }
     }
     private func checkForDailyReset() {
