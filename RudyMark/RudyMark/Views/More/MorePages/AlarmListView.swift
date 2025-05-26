@@ -33,7 +33,18 @@ struct AlarmListView: View {
             }
 
             Button {
-                editingTime = NotificationTime(id: UUID(), hour: 9, minute: 0, isOn: true, type: type)
+                let now = Date()
+                let components = Calendar.current.dateComponents([.hour, .minute], from: now)
+                let hour = components.hour ?? 9
+                let minute = components.minute ?? 0
+                
+                editingTime = NotificationTime(
+                    id: UUID(),
+                    hour: hour,
+                    minute: minute,
+                    isOn: true,
+                    type: type
+                )
             } label: {
                 Label("알림 추가", systemImage: "plus")
             }

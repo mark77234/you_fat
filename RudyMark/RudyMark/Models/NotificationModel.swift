@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-enum NotificationType: String, CaseIterable, Identifiable {
+enum NotificationType: String, CaseIterable, Identifiable, Codable {
     case bloodSugar = "혈당 알림"
     case meal = "식사 알림"
     case medication = "복약 알림"
@@ -21,7 +21,7 @@ enum NotificationType: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-struct NotificationTime: Identifiable, Equatable {
+struct NotificationTime: Identifiable, Equatable, Codable {
     let id: UUID
     var hour: Int
     var minute: Int
