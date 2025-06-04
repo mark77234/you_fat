@@ -9,9 +9,9 @@ struct FoodListView: View {
         ScrollView {
             LazyVStack(spacing: 12) {
                 ForEach(foods) { food in
-                    FoodCard(food: food) {
+                    FoodCard(food: food, onTap: {
                         onSelect(food)
-                    }
+                    })
                     .padding(.horizontal)
                 }
             }
@@ -19,6 +19,7 @@ struct FoodListView: View {
         }
     }
 }
+
 
 struct SelectedFoodsView: View {
     let selectedFoods: [Food]

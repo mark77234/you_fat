@@ -5,13 +5,6 @@
 //  Created by 이병찬 on 4/7/25.
 //
 
-//
-//  CSVImporter.swift
-//  RudyMark
-//
-//  Created by 이병찬 on 4/7/25.
-//
-
 import Foundation
 import SwiftData
 
