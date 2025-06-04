@@ -15,27 +15,37 @@ struct FoodCard: View {
     
     var body: some View {
         Button(action: onTap) {
-            VStack(alignment: .leading, spacing: 12) {
-                HStack(alignment: .top) {
-                    SugarIndicator(sugar: food.sugar)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(alignment: .top, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 6) {
                         Text(food.name)
                             .font(.headline)
                             .foregroundColor(.primary)
                         
-                        Text("\(food.kcal, specifier: "%.0f")kcal")
+                        Text("\(food.kcal, specifier: "%.0f") kcal")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
                     
                     Spacer()
+                    
+                    SugarIndicator(sugar: food.sugar)
                 }
+
+                Divider()
                 
-                NutritionBadges(carbs: food.carbs, protein: food.protein, fat: food.fat)
+                NutritionBadges(
+                    carbs: food.carbs,
+                    protein: food.protein,
+                    fat: food.fat
+                )
             }
             .padding()
-            .cardBackground()
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
+            )
         }
     }
 }
