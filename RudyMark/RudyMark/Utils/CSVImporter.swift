@@ -5,13 +5,6 @@
 //  Created by 이병찬 on 4/7/25.
 //
 
-//
-//  CSVImporter.swift
-//  RudyMark
-//
-//  Created by 이병찬 on 4/7/25.
-//
-
 import Foundation
 import SwiftData
 
@@ -70,6 +63,7 @@ class CSVImporter {
                 let sugar = Double(values[sugarIndex]) ?? 0
 
                 let food = Food(name: name, kcal: kcal, carbs: carbs, protein: protein, fat: fat, sugar: sugar)
+                food.isUserAdded = false
                 modelContext.insert(food)
             }
 

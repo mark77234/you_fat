@@ -15,18 +15,20 @@ struct MiniCard{
     var barColor: Color?
 }
 
-struct CustomButton{
-    let name: String
+struct CardCustomButton{
+    var name: String?
+    var lastDayKcal: String?
+    var lastBlood: String?
     let buttonColor: Color?
-    var icon: String?
+    var icon: Image?
     var destination: AnyView?
 }
 
 struct CardData {
-    var cardIcon: String?
+    var cardIcon: Image?
     var main_title: String?
     var title: String?
-    var description: String?
+    var popoMessage: String?
     var blood_count: Int?
     let backgroundColor: Color
     let mainTextColor: Color
@@ -41,5 +43,5 @@ struct CardData {
     var miniCards: [MiniCard]?
     var miniCardsColor: Color?
     var miniCardsSize: CGFloat?
-    var MealButtons: [CustomButton]?
+    var customButtons: [CardCustomButton]?
 }
