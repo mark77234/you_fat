@@ -21,7 +21,7 @@ struct StatsView: View {
                 .padding()
                 
                 if selectedTab == 0 {
-                    MealStatsView()
+//                    MainStatsView()
                 } else {
                     SugarStatsView()
                 }
