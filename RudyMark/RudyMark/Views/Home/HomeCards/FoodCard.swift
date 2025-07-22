@@ -14,8 +14,8 @@ struct TodayKcalMiniCard: View {
             VStack(alignment: .center) {
                 HStack(alignment: .center, spacing: 10) {
                     (
-                        Text("\(Int(progress))").bold().foregroundColor(.black).font(.title)
-                        + Text(" / \(Int(card.max ?? 2000)) kcal").foregroundColor(.gray).font(.title3)
+                        Text("\(Int(progress))").bold().foregroundStyle(.black).font(.title)
+                        + Text(" / \(Int(card.max ?? 2000)) kcal").foregroundStyle(.gray).font(.title3)
                     )
                 }
                 .frame(height: 80)
@@ -60,7 +60,7 @@ struct NutrientsMiniCard : View{
                 HStack(alignment: .center,spacing:10) {
                     Text(miniCard.title)
                         .font(.subheadline)
-                        .foregroundColor(.deepGray)
+                        .foregroundStyle(.deepGray)
                     
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 20)
@@ -72,8 +72,8 @@ struct NutrientsMiniCard : View{
                     }
                     
                     (
-                        Text("\(Int(progress))").bold().foregroundColor(.black)
-                        + Text(" / \(Int(max)) g").foregroundColor(.black)
+                        Text("\(Int(progress))").bold().foregroundStyle(.black)
+                        + Text(" / \(Int(max)) g").foregroundStyle(.black)
                     )
                 }
                 .frame(maxWidth: .infinity, alignment: .center)

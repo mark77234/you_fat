@@ -39,7 +39,7 @@ struct InputPillTimeView: View {
                             .foregroundStyle(.black)
                         Spacer()
                         Image(systemName: "chevron.down")
-                            .foregroundColor(.gray)
+                            .foregroundStyle(.gray)
                     }
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))

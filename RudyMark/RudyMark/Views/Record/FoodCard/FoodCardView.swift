@@ -20,11 +20,11 @@ struct FoodCard: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(food.name)
                             .font(.headline)
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                         
                         Text("\(food.kcal, specifier: "%.0f") kcal")
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     
                     Spacer()
@@ -79,11 +79,11 @@ struct SugarIndicator: View {
         VStack(spacing: 4) {
             Text("당")
                 .font(.caption2)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
             
             Text("\(sugar, specifier: "%.1f")g")
                 .font(.system(size: 16, weight: .bold, design: .rounded))
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
         }
         .padding(8)
         .frame(minWidth: 50)
@@ -109,11 +109,11 @@ struct NutritionBadge: View {
                 Text(unit)
                     .font(.system(size: 10))
             }
-            .foregroundColor(color)
+            .foregroundStyle(color)
             
             Text(label)
                 .font(.system(size: 10, weight: .medium))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         .padding(8)
         .frame(maxWidth: .infinity)

@@ -94,3 +94,4 @@ iOSInjectionProject/
 # End of https://www.toptal.com/developers/gitignore/api/swift
 *.xcuserstate
 .DS_Store
+.DS_Store

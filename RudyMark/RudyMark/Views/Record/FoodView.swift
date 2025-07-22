@@ -97,7 +97,7 @@ struct CartButton: View {
                     .font(.caption2)
                     .padding(5)
                     .background(Color.red)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .clipShape(Circle())
                     .offset(x: 8, y: -8)
             }

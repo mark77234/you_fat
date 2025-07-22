@@ -33,7 +33,7 @@ struct BloodCardView: View {
                     .frame(minWidth: 100, alignment: .center)
                 Text("mg/dL")
                     .font(.title3)
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.gray)
                 
             }
             .frame(maxWidth: .infinity, alignment: .center)

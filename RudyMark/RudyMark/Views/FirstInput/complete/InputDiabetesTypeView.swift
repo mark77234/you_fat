@@ -75,7 +75,7 @@ struct SelectableTextButton: View {
         Button(action: action) {
             Text(title)
                 .font(.system(size: 16, weight: .medium))
-                .foregroundColor(.black)
+                .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, minHeight: 50)
                 .background(
                     RoundedRectangle(cornerRadius: 10)

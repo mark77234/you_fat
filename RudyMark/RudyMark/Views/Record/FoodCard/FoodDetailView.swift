@@ -53,7 +53,7 @@ struct FoodDetailView: View {
                 }) {
                     Text("장바구니에 추가")
                         .font(.headline)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.blue)
@@ -87,7 +87,7 @@ struct NutritionInfoView: View {
                 .font(.headline)
             Text(label)
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
     }
@@ -104,7 +104,7 @@ struct NutritionDetailRow: View {
             Text(label)
             Spacer()
             Text("\(value, specifier: "%.1f") \(unit)")
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
     }
 }

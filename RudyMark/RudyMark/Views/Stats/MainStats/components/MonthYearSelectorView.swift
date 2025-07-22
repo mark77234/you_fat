@@ -7,78 +7,46 @@
 import SwiftUI
 
 struct MonthYearSelectorView: View {
-    @Binding var selectedDate: Date
-    @State private var showPicker = false
-    
-    @State private var currentYear: Int
-    @State private var currentMonth: Int
-    
-    init(selectedDate: Binding<Date>) {
-        _selectedDate = selectedDate
-        let calendar = Calendar.current
-        _currentYear = State(initialValue: calendar.component(.year, from: selectedDate.wrappedValue))
-        _currentMonth = State(initialValue: calendar.component(.month, from: selectedDate.wrappedValue))
-    }
-    
-    private var years: [Int] {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        return Array(currentYear - 10 ... currentYear + 10)
-    }
-    
-    private var months: [Int] {
-        Array(1...12)
-    }
-    
-    private var dateFormatter: DateFormatter {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy년 M월"
-        f.locale = Locale(identifier: "ko_KR")
-        return f
-    }
-    private var yearFormatter: NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.usesGroupingSeparator = false // 쉼표 사용 안 함
-        formatter.numberStyle = .none // 숫자 스타일 (없음)
-        return formatter
-    }
-    
+    @ObservedObject var viewModel: CalendarViewModel
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // 🔻 상단 월/연도 표시 버튼 (토글용)
             Button(action: {
-                let calendar = Calendar.current
-                currentYear = calendar.component(.year, from: selectedDate)
-                currentMonth = calendar.component(.month, from: selectedDate)
-                withAnimation(.smooth(duration: 0.5)) { // ✅ 이 줄 추가
-                        showPicker.toggle()
-                    }            }) {
+                viewModel.syncWithSelectedDate() // 현재 날짜를 피커에 반영
+                withAnimation(.smooth(duration: 0.5)) {
+                    viewModel.showPicker.toggle()
+                }
+            }) {
                 HStack {
                     Spacer()
-                    Text(dateFormatter.string(from: selectedDate))
-                        .foregroundColor(.primary)
-                    Image(systemName: showPicker ? "chevron.up" : "chevron.down")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 14, weight: .semibold))
+                    Text(viewModel.formattedDate) // 예: "2025년 4월"
+                        .foregroundStyle(.black)
+                        .font(.setPretendard(weight: .semiBold, size: 20))
+                    Image(systemName: viewModel.showPicker ? "chevron.up" : "chevron.down")
+                        .font(.setPretendard(weight: .semiBold, size: 20))
                     Spacer()
                 }
                 .padding()
             }
-            
-            if showPicker {
+
+            // 🔻 드롭다운 피커
+            if viewModel.showPicker {
                 VStack(alignment: .center) {
                     HStack {
                         Spacer()
-                        Picker("Year", selection: $currentYear) {
-                            ForEach(years, id: \.self) { year in
-                                Text("\(yearFormatter.string(from: NSNumber(value: year)) ?? "\(year)")년")
+                        Picker("Year", selection: $viewModel.currentYear) {
+                            ForEach(viewModel.years, id: \.self) { year in
+                                Text("\(viewModel.yearFormatter.string(from: NSNumber(value: year)) ?? "\(year)")년")
                                     .tag(year)
                             }
                         }
                         .pickerStyle(.wheel)
                         .labelsHidden()
                         .frame(width: 150)
-                        
-                        Picker("Month", selection: $currentMonth) {
-                            ForEach(months, id: \.self) { month in
+
+                        Picker("Month", selection: $viewModel.currentMonth) {
+                            ForEach(viewModel.months, id: \.self) { month in
                                 Text("\(month)월").tag(month)
                             }
                         }
@@ -88,17 +56,12 @@ struct MonthYearSelectorView: View {
                         Spacer()
                     }
                     .frame(height: 200)
-                    
+
                     Button(action: {
-                        var components = DateComponents()
-                        components.year = currentYear
-                        components.month = currentMonth
-                        components.day = 1
-                        
-                        if let newDate = Calendar.current.date(from: components) {
-                            selectedDate = newDate
+                        viewModel.updateDate()
+                        withAnimation(.smooth(duration: 0.5)) {
+                            viewModel.showPicker.toggle()
                         }
-                        showPicker = false
                     }) {
                         Text("완료")
                             .font(.system(size: 16, weight: .semibold))
@@ -106,7 +69,6 @@ struct MonthYearSelectorView: View {
                             .foregroundStyle(.purple)
                     }
                 }
-                .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
         .padding(.horizontal)

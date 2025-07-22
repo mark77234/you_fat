@@ -26,7 +26,7 @@ struct WaterIntakeCardView: View {
                 }) {
                     Image(systemName: "minus.circle.fill")
                         .font(.title)
-                        .foregroundColor(.purple)
+                        .foregroundStyle(.purple)
                 }
 
                 Text("\(cups)컵")
@@ -43,13 +43,13 @@ struct WaterIntakeCardView: View {
                 }) {
                     Image(systemName: "plus.circle.fill")
                         .font(.title)
-                        .foregroundColor(.purple)
+                        .foregroundStyle(.purple)
                 }
             }
 
             Text("총 \(cups * 200)ml")
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundStyle(.gray)
 
             let rows = [0..<5, 5..<10]
             ForEach(rows, id: \.self) { range in
@@ -74,7 +74,7 @@ struct WaterIntakeCardView: View {
                             if index == cups && index < maxCups {
                                 Text("+")
                                     .font(.title3)
-                                    .foregroundColor(.gray)
+                                    .foregroundStyle(.gray)
                             }
                         }
                         .onTapGesture {

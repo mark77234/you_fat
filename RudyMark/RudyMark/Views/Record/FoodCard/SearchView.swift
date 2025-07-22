@@ -15,7 +15,7 @@ struct SearchBar: View {
         HStack(spacing: 12) {
             HStack {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 
                 TextField("음식 이름 검색", text: $text)
                     .submitLabel(.search)
@@ -45,11 +45,11 @@ struct EmptyStateView: View {
         VStack(spacing: 16) {
             Image(systemName: "fork.knife.circle")
                 .font(.system(size: 60))
-                .foregroundColor(.purple.opacity(0.3))
+                .foregroundStyle(.purple.opacity(0.3))
             
             Text("먹은 음식을 검색해보세요")
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         .frame(maxHeight: .infinity)
     }
@@ -62,11 +62,11 @@ struct NoResultsView: View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.magnifyingglass")
                 .font(.system(size: 60))
-                .foregroundColor(.orange.opacity(0.3))
+                .foregroundStyle(.orange.opacity(0.3))
             
             Text("'\(query)'에 대한\n검색 결과가 없습니다")
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
         .frame(maxHeight: .infinity)

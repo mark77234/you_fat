@@ -19,13 +19,13 @@ struct HomeBloodCard: View {
                         if let blood_count = card.blood_count {
                             Text("\(blood_count)회")
                                 .font(.subheadline)
-                                .foregroundColor(Color.gray)
+                                .foregroundStyle(Color.gray)
                         }
                         Text(card.stat ?? "미측정")
                             .font(.title3)
                             .bold()
                         Text("\(Int(blood_progress))mg/dL")
-                            .foregroundColor(Color.gray)
+                            .foregroundStyle(Color.gray)
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.bottom, 60)

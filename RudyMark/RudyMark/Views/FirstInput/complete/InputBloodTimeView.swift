@@ -26,7 +26,7 @@ struct InputBloodTimeView: View {
                 
                 Text("선호하는 혈당 체크 시간대를\n2개 이상 선택해주세요")
                     .font(.setPretendard(weight: .medium, size: 18))
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.gray)
                 
                     .padding(.vertical)
                 VStack{
@@ -67,7 +67,7 @@ struct InputBloodTimeView: View {
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(selectedTimes.count >= 2 ? .primaryGreen : Color.gray)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .cornerRadius(10)
                 }
                 .disabled(selectedTimes.count < 2)

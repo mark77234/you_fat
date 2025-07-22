@@ -32,7 +32,7 @@ struct BloodView: View {
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("저장하기")
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.purple)

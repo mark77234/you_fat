@@ -10,7 +10,7 @@ struct MainTitle: View {
                     Text(card.main_title ?? "메인 타이틀")
                         .font(.title2)
                         .bold()
-                        .foregroundColor(card.mainTextColor)
+                        .foregroundStyle(card.mainTextColor)
                         .frame(maxWidth: .infinity,alignment: .leading)
                 }
                 if card.title != nil {
@@ -27,7 +27,7 @@ struct MainTitle: View {
                         Text(popoMessage)
                             .font(.subheadline)
                             .bold()
-                            .foregroundColor(Color.black)
+                            .foregroundStyle(Color.black)
                             .frame(alignment: .leading)
                     }
                     .padding(10)

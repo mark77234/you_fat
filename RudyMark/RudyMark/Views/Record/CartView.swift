@@ -18,14 +18,14 @@ struct CartView: View {
                                     .font(.headline)
                                 Text("\(food.kcal, specifier: "%.0f")kcal")
                                     .font(.subheadline)
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.secondary)
                             }
                             Spacer()
                             Button {
                                 cartViewModel.remove(food)
                             } label: {
                                 Image(systemName: "trash")
-                                    .foregroundColor(.red)
+                                    .foregroundStyle(.red)
                             }
                         }
                     }
@@ -49,11 +49,11 @@ struct EmptyCartView: View {
         VStack(spacing: 20) {
             Image(systemName: "cart.fill")
                 .font(.system(size: 60))
-                .foregroundColor(.gray.opacity(0.3))
+                .foregroundStyle(.gray.opacity(0.3))
             
             Text("장바구니가 비어있습니다")
                 .font(.title3)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         .frame(maxHeight: .infinity)
     }
@@ -68,7 +68,7 @@ struct SaveButton: View {
                 Spacer()
                 Text("저장하기")
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                 Spacer()
             }
             .padding()

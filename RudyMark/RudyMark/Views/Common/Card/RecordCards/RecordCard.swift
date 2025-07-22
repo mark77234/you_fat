@@ -52,7 +52,7 @@ struct CustomButtonView: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .foregroundColor(.black)
+        .foregroundStyle(.black)
     }
     
     @ViewBuilder
@@ -74,13 +74,13 @@ struct CustomButtonView: View {
             if let lastBlood = button.lastBlood {
                 Text(lastBlood)
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.gray)
             }
             
             if let lastDayKcal = button.lastDayKcal {
                 Text(lastDayKcal)
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.gray)
             }
         }
     }
@@ -90,6 +90,6 @@ struct CustomButtonView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 30, height: 30)
-            .foregroundColor(.deepPurple)
+            .foregroundStyle(.deepPurple)
     }
 }

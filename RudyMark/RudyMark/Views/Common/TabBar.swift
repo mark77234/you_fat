@@ -22,7 +22,7 @@ struct TabBar: View {
                     Label("기록", systemImage: "clock.fill")
                 }
             
-            StatsView()
+            MainStatsView()
                 .tabItem {
                     Label("통계", systemImage: "chart.bar.fill")
                 }

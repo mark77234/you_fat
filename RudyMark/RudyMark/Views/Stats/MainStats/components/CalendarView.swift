@@ -7,12 +7,14 @@
 
 import SwiftUI
 
+// 아래 CalendarView 를 위한 뷰 분리
 struct CalendarDayView: View {
     let day: CalendarDay
     let onTap: () -> Void
     
     var body: some View {
         ZStack {
+            // 기록 있을 때 연보라색 색 채우기
             if day.isHighlighted {
                 Circle()
                     .fill(Color.primaryPurple.opacity(0.2))
@@ -21,21 +23,14 @@ struct CalendarDayView: View {
             }
             
             if day.isSelected {
-                ZStack {
-                    if day.isHighlighted {
-                        Circle().stroke(Color.primaryPurple, lineWidth: 3)
-                    } else {
-                        Circle().fill(Color.primaryPurple.opacity(0.2))
-                        Circle().stroke(Color.primaryPurple, lineWidth: 3)
-                    }
-                }
-                .frame(width: 45/852 * UIScreen.main.bounds.height,
-                       height: 45/852 * UIScreen.main.bounds.height)
+                Circle().stroke(Color.primaryPurple, lineWidth: 3)
+                    .frame(width: 45/852 * UIScreen.main.bounds.height,
+                           height: 45/852 * UIScreen.main.bounds.height)
             }
             
             Text("\(day.dayNumber)")
-                .font(.system(size: 17, weight: day.isSelected ? .bold : .regular))
-                .foregroundColor(day.isCurrentMonth ? .black : .gray.opacity(0.6))
+                .font(.setPretendard(weight: day.isSelected ? .bold : .regular, size: 14))
+                .foregroundStyle(.black)
                 .frame(width: 45/852 * UIScreen.main.bounds.height,
                        height: 45/852 * UIScreen.main.bounds.height)
         }
@@ -52,15 +47,16 @@ struct CalendarView: View {
     let weekdayNames = ["일", "월", "화", "수", "목", "금", "토"]
     
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 0) {
             HStack {
                 ForEach(weekdayNames, id: \.self) { weekday in
                     Text(weekday)
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(.gray)
+                        .font(.setPretendard(weight: .bold, size: 15))
+                        .foregroundStyle(.black)
                         .frame(maxWidth: .infinity)
                 }
             }
+            .padding(.bottom, 18)
             
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
                 ForEach(viewModel.days) { day in
@@ -76,8 +72,9 @@ struct CalendarView: View {
                 .fill(Color.white)
                 .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 5)
         )
-        .onAppear {
-            viewModel.generateCalendar(for: viewModel.selectedDate)
-        }
     }
+}
+
+#Preview {
+    CalendarView(viewModel: CalendarViewModel())
 }

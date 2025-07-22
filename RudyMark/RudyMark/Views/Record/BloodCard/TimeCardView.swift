@@ -16,7 +16,7 @@ struct TimeCardView: View {
             .padding()
             .frame(maxWidth: .infinity)
             .background(Color.white)
-            .foregroundColor(.gray)
+            .foregroundStyle(.gray)
             .cornerRadius(12)
             .padding(.horizontal)
     }

@@ -34,7 +34,7 @@ struct SelectedFoodsView: View {
                 Spacer()
                 Text("\(selectedFoods.count)개")
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .padding(.horizontal)
             
@@ -60,15 +60,15 @@ struct SelectedFoodItem: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(food.name)
                     .font(.subheadline)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                 Text("\(food.kcal, specifier: "%.0f")kcal")
                     .font(.caption2)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             
             Button(action: onRemove) {
                 Image(systemName: "xmark.circle.fill")
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.gray)
             }
         }
         .padding(.vertical, 8)
